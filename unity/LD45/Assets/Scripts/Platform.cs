@@ -4,11 +4,16 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshModifier))]
 public class Platform : MonoBehaviour {
   private NavMeshModifier navMeshModifier;
-  private Renderer renderer_;
+  private Renderer childRenderer;
+  private bool isDestination = false;
+  private bool isPlayerPlatform = false;
+  private Color currentColor;
 
   public Color defaultColor = new Color(0.53f, 0.53f, 0.53f);
   public Color pendingColor = new Color(1.0f, 0.93f, .41f);
   public Color movingColor = new Color(1.0f, .38f, 0.0f);
+  public Color destinationColor = new Color(0.00f, 0.60f, 0.99f);
+  public Color playerPlatformColor = new Color(0.00f, 0.90f, 0.99f);
 
   public int HeightmapX = -1;
   public int HeightmapY = -1;
@@ -49,9 +54,30 @@ public class Platform : MonoBehaviour {
     );
   }
 
+  public void SetDestination(bool state) {
+    isDestination = state;
+    CommitColor();
+  }
+
+  public void SetPlayerPlatform(bool state) {
+    isPlayerPlatform = state;
+    CommitColor();
+  }
+
   private void SetColor(Color color) {
-    if (renderer_) {
-      renderer_.material.SetColor("_Color", color);
+    currentColor = color;
+    CommitColor();
+  }
+
+  private void CommitColor() {
+    Color color = currentColor;
+    if (isDestination) {
+      color = destinationColor;
+    } else if (isPlayerPlatform) {
+      color = playerPlatformColor;
+    }
+    if (childRenderer) {
+      childRenderer.material.SetColor("_Color", color);
     }
   }
 
@@ -63,7 +89,7 @@ public class Platform : MonoBehaviour {
 
   private void Start() {
     navMeshModifier = GetComponent<NavMeshModifier>();
-    renderer_ = GetComponentInChildren<Renderer>();
+    childRenderer = GetComponentInChildren<Renderer>();
     SetColor(defaultColor);
   }
 }
