@@ -10,3 +10,6 @@ Ludum Dare 45 - theme: "Start with nothing"
 - Mutation
   - A counter increments when you pick things up, changing the landscape
   
+
+![counter](./docs/counter.png)
+
