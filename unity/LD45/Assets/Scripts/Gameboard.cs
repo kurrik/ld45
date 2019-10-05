@@ -10,17 +10,16 @@ public class Gameboard : MonoBehaviour {
   private int bakeTicks = 0;
 
   public Heightmap Heightmap;
+  public PlayerController Player;
   public NavMeshSurface surface;
   public GameObject pickupPrefab;
   public GameObject platformPrefab;
   public GameObject platformParent;
   public float pendingSeconds = 1.0f;
 
-  public Color defaultColor = new Color(0.53f, 0.53f, 0.53f);
-  public Color pendingColor = new Color(1.0f, 0.93f, .41f);
-  public Color movingColor = new Color(1.0f, .38f, 0.0f);
-
   private Platform[,] platforms = new Platform[Heightmap.unitsHigh, Heightmap.unitsWide];
+  private Platform destinationPlatform;
+  private Platform playerPlatform;
 
   public int Value {
     get => value;
@@ -49,7 +48,25 @@ public class Gameboard : MonoBehaviour {
     }
   }
 
+  public void OnDestinationSet(Platform platform) {
+    if (destinationPlatform) {
+      destinationPlatform.SetDestination(false);
+    }
+    destinationPlatform = platform;
+    destinationPlatform.SetDestination(true);
+  }
+
+  public void OnPlayerOnPlatform(Platform platform) {
+    if (playerPlatform) {
+      playerPlatform.SetPlayerPlatform(false);
+    }
+    playerPlatform = platform;
+    playerPlatform.SetPlayerPlatform(true);
+  }
+
   private void Start() {
+    Player.AddDestinationSetListener(OnDestinationSet);
+    Player.AddPlayerOnPlatformListener(OnPlayerOnPlatform);
     Heightmap.AddStateListener(OnCellStateChanged);
     CreatePlatforms(0);
     digitsCreated = 1;
@@ -120,9 +137,6 @@ public class Gameboard : MonoBehaviour {
         ).GetComponent<Platform>();
         Heightmap.GetHeightmapCoordinates(digit, x, y, out obj.HeightmapX, out obj.HeightmapY);
         obj.gameObject.layer = Gameboard.PlatformLayer;
-        obj.defaultColor = defaultColor;
-        obj.pendingColor = pendingColor;
-        obj.movingColor = movingColor;
         platforms[obj.HeightmapY, obj.HeightmapX] = obj;
       }
     }
