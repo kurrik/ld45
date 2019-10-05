@@ -27,6 +27,18 @@ public class Digit : MonoBehaviour {
     StartCoroutine(AnimateValue(newValue, gameboard));
   }
 
+  public Platform FindPickupPlatform() {
+    for (int x = 0; x < letterWidth; x++) {
+      for (int y = 0; y < letterHeight; y++) {
+        Platform obj = objects[y, x];
+        if (Random.Range(0.0f, 1.0f) > 0.7f) {
+          return obj;
+        }
+      }
+    }
+    return null;
+  }
+
   private void Awake() {
     for (int x = 0; x < letterWidth; x++) {
       for (int y = 0; y < letterHeight; y++) {
@@ -75,7 +87,8 @@ public class Digit : MonoBehaviour {
     for (int x = 0; x < letterWidth; x++) {
       for (int y = 0; y < letterHeight; y++) {
         if (masks[newValue, y, x] == 1) {
-          objects[y, x].SetPending();
+          Platform obj = objects[y, x];
+          obj.SetPending();
         }
       }
     }

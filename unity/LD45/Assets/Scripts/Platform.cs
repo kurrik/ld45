@@ -9,9 +9,10 @@ public class Platform : MonoBehaviour {
 
   public float boostRate = 0.3f; // Units per second.
   public float stopThreshold = -0.05f; // Floor at which the piece stops moving.
-  public Color defaultColor = new Color(135, 135, 135);
-  public Color pendingColor = new Color(255, 236, 105);
-  public Color movingColor = new Color(255, 96, 0);
+  public float startThreshold = 0.1f; // Altitude at which a reactivated block appears.
+  public Color defaultColor = new Color(0.53f, 0.53f, 0.53f);
+  public Color pendingColor = new Color(1.0f, 0.93f, .41f);
+  public Color movingColor = new Color(1.0f, .38f, 0.0f);
 
   // Boost is paid out over time.
   public void SetBoost(float amount) {
@@ -24,8 +25,24 @@ public class Platform : MonoBehaviour {
     ImmediatelyAdjustY(amount);
   }
 
+  private void SetHeight(float height) {
+    ImmediatelyAdjustY(height - transform.position.y);
+  }
+
   public void SetPending() {
     SetColor(pendingColor);
+    if (transform.position.y < startThreshold) {
+      SetHeight(startThreshold);
+    }
+  }
+
+  public void SpawnPickup(GameObject prefab) {
+    GameObject obj = Instantiate<GameObject>(
+      prefab,
+      transform.position + prefab.transform.position,
+      Quaternion.identity,
+      transform
+    );
   }
 
   private void SetColor(Color color) {
