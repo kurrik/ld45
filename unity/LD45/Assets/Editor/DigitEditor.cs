@@ -6,10 +6,6 @@ using UnityEditor;
 public class DigitEditor : Editor {
   public override void OnInspectorGUI() { 
     DrawDefaultInspector();
-
-    Digit myScript = (Digit)target;
-    if (GUILayout.Button("Increment")) {
-      myScript.Value += 1;
-    }
+    Digit digit = (Digit)target;
   }
 }
