@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 
 public class Digit : MonoBehaviour {
   private const int letterWidth = 5;
@@ -9,104 +8,87 @@ public class Digit : MonoBehaviour {
   public GameObject platformPrefab = null;
   public float pendingSeconds = 1.0f;
   public float transitionSeconds = 0.5f;
-  public float bumpIncrement = 0.1f;
+  public float bumpIncrement = 0.2f;
+  public float descendDelay = 5f;
+  public float descendRate = 0.05f;
   public Color defaultColor;
   public Color pendingColor;
   public Color movingColor;
 
   private int value = 0;
-  private GameObject[,] objects = new GameObject[letterHeight, letterWidth];
-  private float[,] heights = new float[letterHeight, letterWidth];
+  private float descendDelayElapsed = 0.0f;
+  private Platform[,] objects = new Platform[letterHeight, letterWidth];
 
-  public int Value { 
-    get => value;
-    set => StartCoroutine(ChangeValue(value));
+  public void SetupInitialPlatform() {
+    SetValue(0, bumpIncrement * 3);
   }
 
-  void Start() {
+  public void StartAnimateValue(int newValue, Gameboard gameboard) {
+    StartCoroutine(AnimateValue(newValue, gameboard));
+  }
+
+  private void Awake() {
     for (int x = 0; x < letterWidth; x++) {
       for (int y = 0; y < letterHeight; y++) {
-        float height = 0.0f;
-        heights[y, x] = height;
-        Vector3 offset = new Vector3(-x, height, y);
-        objects[y, x] = Instantiate<GameObject>(
+        float height = -0.2f;
+        Vector3 offset = new Vector3(letterWidth - x - 1, height, y);
+        Platform obj = Instantiate<GameObject>(
           platformPrefab,
-          offset,
+          transform.position + offset,
           Quaternion.identity,
           transform
-        );
-        objects[y, x].GetComponentInChildren<Renderer>().material.SetColor("_Color", defaultColor);
+        ).GetComponent<Platform>();
+        obj.defaultColor = defaultColor;
+        obj.pendingColor = pendingColor;
+        obj.movingColor = movingColor;
+        objects[y, x] = obj;
       }
     }
   }
 
-  private struct Address {
-    public int X;
-    public int Y;
-
-    public Address(int x, int y) {
-      X = x;
-      Y = y;
+  private void FixedUpdate() {
+    if (descendDelayElapsed < descendDelay) {
+      descendDelayElapsed += Time.fixedDeltaTime;
+      return;
+    }
+    for (int x = 0; x < letterWidth; x++) {
+      for (int y = 0; y < letterHeight; y++) {
+        Platform obj = objects[y, x];
+        obj.Adjust(-descendRate * Time.fixedDeltaTime);
+      }
     }
   }
 
-  private class MaskedAddresses : IEnumerable<Address> {
-    private int v;
-
-    public MaskedAddresses(int newValue) {
-      v = newValue;
-    }
-
-    private IEnumerator<Address> maskedAddresses() {
-      for (int x = 0; x < letterWidth; x++) {
-        for (int y = 0; y < letterHeight; y++) {
-          if (masks[v, y, x] == 1) {
-            yield return new Address(x, y);
-          }
+  private void SetValue(int newValue, float height) {
+    for (int x = 0; x < letterWidth; x++) {
+      for (int y = 0; y < letterHeight; y++) {
+        if (masks[newValue, y, x] == 1) {
+          Platform obj = objects[y, x];
+          obj.Adjust(height);
         }
       }
     }
-
-    public IEnumerator<Address> GetEnumerator() {
-      return maskedAddresses();
-    }
-
-    IEnumerator IEnumerable.GetEnumerator() {
-      return GetEnumerator();
-    }
   }
 
-  private IEnumerator ChangeValue(int newValue) {
+  private IEnumerator AnimateValue(int newValue, Gameboard gameboard) {
     newValue = newValue % 10;
-    if (newValue == value) {
-      yield break;
-    }
-    MaskedAddresses maskedAddresses = new MaskedAddresses(newValue);
-    foreach (Address a in maskedAddresses) {
-      objects[a.Y, a.X].GetComponentInChildren<Renderer>().material.SetColor("_Color", pendingColor);
+    for (int x = 0; x < letterWidth; x++) {
+      for (int y = 0; y < letterHeight; y++) {
+        if (masks[newValue, y, x] == 1) {
+          objects[y, x].SetPending();
+        }
+      }
     }
     yield return new WaitForSeconds(pendingSeconds);
-    foreach (Address a in maskedAddresses) {
-      objects[a.Y, a.X].GetComponentInChildren<Renderer>().material.SetColor("_Color", movingColor);
-    }
-    float elapsed = 0.0f;
-    yield return new WaitForEndOfFrame();
-    while (elapsed < transitionSeconds) {
-      elapsed += Time.deltaTime;
-      float pct = elapsed / transitionSeconds;
-      foreach (Address a in maskedAddresses) {
-        float start = heights[a.Y, a.X];
-        Vector3 pos = objects[a.Y, a.X].transform.position;
-        pos.y = start + (bumpIncrement * pct);
-        objects[a.Y, a.X].transform.position = pos;
+    for (int x = 0; x < letterWidth; x++) {
+      for (int y = 0; y < letterHeight; y++) {
+        if (masks[newValue, y, x] == 1) {
+          Platform obj = objects[y, x];
+          obj.SetBoost(bumpIncrement);
+        }
       }
-      yield return new WaitForEndOfFrame();
     }
     value = newValue;
-    foreach (Address a in maskedAddresses) {
-      heights[a.Y, a.X] += bumpIncrement;
-      objects[a.Y, a.X].GetComponentInChildren<Renderer>().material.SetColor("_Color", defaultColor);
-    }
   }
 
   public static int[,,] masks = {
@@ -221,4 +203,14 @@ public class Digit : MonoBehaviour {
       {1,1,1,1,1},
     },
   };
+
+#if UNITY_EDITOR
+  private Color gizmoColor_ = new Color(1.0f, 0.0f, 1.0f, 0.5f);
+
+  public void OnDrawGizmosSelected() {
+    Gizmos.color = gizmoColor_;
+    Vector3 dimensions = new Vector3(letterWidth, 1, letterHeight);
+    Gizmos.DrawCube(transform.position + dimensions / 2 + new Vector3(0, -0.9f, 0), dimensions);
+  }
+#endif
 }
