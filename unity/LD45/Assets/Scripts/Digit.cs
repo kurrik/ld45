@@ -14,13 +14,18 @@ public class Digit : MonoBehaviour {
   public Color defaultColor;
   public Color pendingColor;
   public Color movingColor;
+  public bool useNewHeightmap = true;
 
   private int value = 0;
+  private int digitIndex = 0;
   private float descendDelayElapsed = 0.0f;
-  private Platform[,] objects = new Platform[letterHeight, letterWidth];
+  private Platform[,] objects = new Platform[Heightmap.digitHeight, Heightmap.digitWidth];
 
-  public void SetupInitialPlatform() {
-    SetValue(0, bumpIncrement * 3);
+  public void SetDigitIndex(int i) {
+    digitIndex = i;
+    if (i == 0) {
+      SetValue(0, bumpIncrement * 3);
+    }
   }
 
   public void StartAnimateValue(int newValue, Gameboard gameboard) {
@@ -58,25 +63,51 @@ public class Digit : MonoBehaviour {
     }
   }
 
-  private void FixedUpdate() {
-    if (descendDelayElapsed < descendDelay) {
-      descendDelayElapsed += Time.fixedDeltaTime;
-      return;
+  private void Update() {
+    if (useNewHeightmap) {
+      Game.instance.Gameboard.Heightmap.Log();
+      Debug.LogFormat("digitIndex {0}", digitIndex);
+      foreach (Heightmap.Cell h in Game.instance.Gameboard.Heightmap.DigitCells(digitIndex)) {
+        Platform obj = objects[h.DigitY, h.DigitX];
+        Debug.LogFormat("Setting fixed platform height of {0},{1} (global: {4},{5}) to {2} (target: {3})", h.DigitX, h.DigitY, h.Height, h.Target, h.IndexX, h.IndexY);
+        obj.SetHeight(h.Height);
+      }
     }
-    for (int x = 0; x < letterWidth; x++) {
-      for (int y = 0; y < letterHeight; y++) {
-        Platform obj = objects[y, x];
-        obj.Adjust(-descendRate * Time.fixedDeltaTime);
+  }
+
+  private void FixedUpdate() {
+    if (!useNewHeightmap) {
+      if (descendDelayElapsed < descendDelay) {
+        descendDelayElapsed += Time.fixedDeltaTime;
+        return;
+      }
+      for (int x = 0; x < letterWidth; x++) {
+        for (int y = 0; y < letterHeight; y++) {
+          Platform obj = objects[y, x];
+          obj.Adjust(-descendRate * Time.fixedDeltaTime);
+        }
       }
     }
   }
 
   private void SetValue(int newValue, float height) {
-    for (int x = 0; x < letterWidth; x++) {
-      for (int y = 0; y < letterHeight; y++) {
-        if (Masks.Digits[newValue, y, x] == 1) {
-          Platform obj = objects[y, x];
-          obj.Adjust(height);
+    Game.instance.Gameboard.Heightmap.SetHeight(digitIndex, newValue, height);
+    // New heightmap code
+    if (useNewHeightmap) {
+      Debug.LogFormat("digitIndex {0}", digitIndex);
+      foreach (Heightmap.Cell h in Game.instance.Gameboard.Heightmap.DigitCells(digitIndex)) {
+        Platform obj = objects[h.DigitY, h.DigitX];
+        Debug.LogFormat("Setting value platform height of {0},{1} (global: {4},{5}) to {2} (target: {3})", h.DigitX, h.DigitY, h.Height, h.Target, h.IndexX, h.IndexY);
+        obj.SetHeight(h.Height);
+      }
+    } else {
+      // Old code -- delete
+      for (int x = 0; x < letterWidth; x++) {
+        for (int y = 0; y < letterHeight; y++) {
+          if (Masks.Digits[newValue, y, x] == 1) {
+            Platform obj = objects[y, x];
+            obj.Adjust(height);
+          }
         }
       }
     }
@@ -84,6 +115,11 @@ public class Digit : MonoBehaviour {
 
   private IEnumerator AnimateValue(int newValue, Gameboard gameboard) {
     newValue = newValue % 10;
+
+    // New heightmap code
+    Game.instance.Gameboard.Heightmap.Grow(digitIndex, newValue);
+
+    // Old heightmap code
     for (int x = 0; x < letterWidth; x++) {
       for (int y = 0; y < letterHeight; y++) {
         if (Masks.Digits[newValue, y, x] == 1) {

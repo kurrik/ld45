@@ -224,6 +224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dfd578aee2af4d9fa31396b530dd6a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Gameboard: {fileID: 600383118}
 --- !u!4 &430108896
 Transform:
   m_ObjectHideFlags: 0
@@ -268,6 +269,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b23e4a7ccb51a46ceaa9df02446993b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  descendDelay: 5
+  descendRate: 0.05
   surface: {fileID: 600383120}
   digits:
   - {fileID: 1497656819}
@@ -1122,6 +1125,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9210522150271609454, guid: 5eaafee5d866f4d9c9b880ae7baf00ec,
+        type: 3}
+      propertyPath: useNewHeightmap
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5eaafee5d866f4d9c9b880ae7baf00ec, type: 3}

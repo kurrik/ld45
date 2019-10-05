@@ -25,7 +25,7 @@ public class Platform : MonoBehaviour {
     ImmediatelyAdjustY(amount);
   }
 
-  private void SetHeight(float height) {
+  public void SetHeight(float height) {
     ImmediatelyAdjustY(height - transform.position.y);
   }
 

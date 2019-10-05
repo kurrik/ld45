@@ -15,5 +15,9 @@ public class GameboardEditor : Editor {
     if (GUILayout.Button("Bake Navigation")) {
       gameboard.BakeNavigation();
     }
+
+    if (GUILayout.Button("Debug Heightmap")) {
+      gameboard.Heightmap.Log();
+    }
   }
 }
