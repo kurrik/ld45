@@ -74,7 +74,7 @@ public class Digit : MonoBehaviour {
   private void SetValue(int newValue, float height) {
     for (int x = 0; x < letterWidth; x++) {
       for (int y = 0; y < letterHeight; y++) {
-        if (masks[newValue, y, x] == 1) {
+        if (Masks.Digits[newValue, y, x] == 1) {
           Platform obj = objects[y, x];
           obj.Adjust(height);
         }
@@ -86,7 +86,7 @@ public class Digit : MonoBehaviour {
     newValue = newValue % 10;
     for (int x = 0; x < letterWidth; x++) {
       for (int y = 0; y < letterHeight; y++) {
-        if (masks[newValue, y, x] == 1) {
+        if (Masks.Digits[newValue, y, x] == 1) {
           Platform obj = objects[y, x];
           obj.SetPending();
         }
@@ -95,7 +95,7 @@ public class Digit : MonoBehaviour {
     yield return new WaitForSeconds(pendingSeconds);
     for (int x = 0; x < letterWidth; x++) {
       for (int y = 0; y < letterHeight; y++) {
-        if (masks[newValue, y, x] == 1) {
+        if (Masks.Digits[newValue, y, x] == 1) {
           Platform obj = objects[y, x];
           obj.SetBoost(bumpIncrement);
         }
@@ -103,119 +103,6 @@ public class Digit : MonoBehaviour {
     }
     value = newValue;
   }
-
-  public static int[,,] masks = {
-    {
-      {1,1,1,1,1},
-      {1,0,0,0,1},
-      {1,0,0,0,1},
-      {1,0,0,0,1},
-      {1,0,0,0,1},
-      {1,0,0,0,1},
-      {1,0,0,0,1},
-      {1,0,0,0,1},
-      {1,1,1,1,1},
-    },
-    {
-      {0,0,0,0,1},
-      {0,0,0,0,1},
-      {0,0,0,0,1},
-      {0,0,0,0,1},
-      {0,0,0,0,1},
-      {0,0,0,0,1},
-      {0,0,0,0,1},
-      {0,0,0,0,1},
-      {0,0,0,0,1},
-    },
-    {
-      {1,1,1,1,1},
-      {0,0,0,0,1},
-      {0,0,0,0,1},
-      {0,0,0,0,1},
-      {1,1,1,1,1},
-      {1,0,0,0,0},
-      {1,0,0,0,0},
-      {1,0,0,0,0},
-      {1,1,1,1,1},
-    },
-    {
-      {1,1,1,1,1},
-      {0,0,0,0,1},
-      {0,0,0,0,1},
-      {0,0,0,0,1},
-      {1,1,1,1,1},
-      {0,0,0,0,1},
-      {0,0,0,0,1},
-      {0,0,0,0,1},
-      {1,1,1,1,1},
-    },
-    {
-      {1,0,0,0,1},
-      {1,0,0,0,1},
-      {1,0,0,0,1},
-      {1,0,0,0,1},
-      {1,1,1,1,1},
-      {0,0,0,0,1},
-      {0,0,0,0,1},
-      {0,0,0,0,1},
-      {0,0,0,0,1},
-    },
-    {
-      {1,1,1,1,1},
-      {1,0,0,0,0},
-      {1,0,0,0,0},
-      {1,0,0,0,0},
-      {1,1,1,1,1},
-      {0,0,0,0,1},
-      {0,0,0,0,1},
-      {0,0,0,0,1},
-      {1,1,1,1,1},
-    },
-    {
-      {1,1,1,1,1},
-      {1,0,0,0,0},
-      {1,0,0,0,0},
-      {1,0,0,0,0},
-      {1,1,1,1,1},
-      {1,0,0,0,1},
-      {1,0,0,0,1},
-      {1,0,0,0,1},
-      {1,1,1,1,1},
-    },
-    {
-      {1,1,1,1,1},
-      {0,0,0,0,1},
-      {0,0,0,0,1},
-      {0,0,0,0,1},
-      {0,0,0,0,1},
-      {0,0,0,0,1},
-      {0,0,0,0,1},
-      {0,0,0,0,1},
-      {0,0,0,0,1},
-    },
-    {
-      {1,1,1,1,1},
-      {1,0,0,0,1},
-      {1,0,0,0,1},
-      {1,0,0,0,1},
-      {1,1,1,1,1},
-      {1,0,0,0,1},
-      {1,0,0,0,1},
-      {1,0,0,0,1},
-      {1,1,1,1,1},
-    },
-    {
-      {1,1,1,1,1},
-      {1,0,0,0,1},
-      {1,0,0,0,1},
-      {1,0,0,0,1},
-      {1,1,1,1,1},
-      {0,0,0,0,1},
-      {0,0,0,0,1},
-      {0,0,0,0,1},
-      {1,1,1,1,1},
-    },
-  };
 
 #if UNITY_EDITOR
   private Color gizmoColor_ = new Color(1.0f, 0.0f, 1.0f, 0.5f);

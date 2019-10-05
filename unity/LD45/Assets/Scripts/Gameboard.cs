@@ -6,6 +6,7 @@ public class Gameboard : MonoBehaviour {
   private int maxValue = 0;
   private int bakeTicks = 0;
 
+  public Heightmap heightmap = new Heightmap();
   public NavMeshSurface surface;
   public Digit[] digits;
   public GameObject pickupPrefab;
@@ -26,7 +27,7 @@ public class Gameboard : MonoBehaviour {
 
   public void OnPickupTouched(Pickup pickup) {
     Value += 1;
-    GameObject.Destroy(pickup.gameObject);
+    Destroy(pickup.gameObject);
   }
 
   private void Start() {
