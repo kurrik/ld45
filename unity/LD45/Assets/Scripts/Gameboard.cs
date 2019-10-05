@@ -32,9 +32,15 @@ public class Gameboard : MonoBehaviour {
   public void OnPickupTouched(Pickup pickup) {
     Value += 1;
     Destroy(pickup.gameObject);
+    SpawnPickup();
+  }
+
+  public void OnCellStateChanged(Heightmap.Cell cell) {
+    digits[cell.DigitIndex].OnCellStateChanged(cell);
   }
 
   private void Start() {
+    Heightmap.AddStateListener(OnCellStateChanged);
     for (int i = 0; i < digits.Length; i++) {
       digits[i].SetDigitIndex(i);
     }
@@ -73,6 +79,5 @@ public class Gameboard : MonoBehaviour {
       position += 1;
     }
     value = newValue;
-    SpawnPickup();
   }
 }
