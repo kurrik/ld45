@@ -141,7 +141,7 @@ public class Gameboard : MonoBehaviour {
   public void OnDrawGizmosSelected() {
     Gizmos.color = gizmoColor_;
     Vector3 dimensions = new Vector3(Heightmap.digitWidth, 1, Heightmap.digitHeight);
-    Gizmos.DrawCube(transform.position + dimensions / 2 + new Vector3(0, -0.9f, 0), dimensions);
+    Gizmos.DrawCube(transform.position + dimensions / 2 + new Vector3(-Heightmap.digitWidth, -0.9f, 0), dimensions);
   }
 #endif
 }
