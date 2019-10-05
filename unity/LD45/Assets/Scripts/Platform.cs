@@ -6,11 +6,12 @@ public class Platform : MonoBehaviour {
   private NavMeshModifier navMeshModifier;
   private Renderer renderer_;
 
-  public float stopThreshold = -0.05f; // Floor at which the piece stops moving.
-  public float startThreshold = 0.1f; // Altitude at which a reactivated block appears.
   public Color defaultColor = new Color(0.53f, 0.53f, 0.53f);
   public Color pendingColor = new Color(1.0f, 0.93f, .41f);
   public Color movingColor = new Color(1.0f, .38f, 0.0f);
+
+  public int HeightmapX = -1;
+  public int HeightmapY = -1;
 
   public void SetHeight(float height) {
     Vector3 pos = transform.position;

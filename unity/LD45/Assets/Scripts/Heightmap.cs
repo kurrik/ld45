@@ -3,7 +3,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Heightmap {
+public class Heightmap : MonoBehaviour {
   public const int digitWidth = 5;
   public const int digitHeight = 9;
   public const int digits = 5;
@@ -58,7 +58,7 @@ public class Heightmap {
     }
   }
 
-  public Heightmap() {
+  public void Awake() {
     for (int d = 0; d < digits; d++) {
       for (int digitX = 0; digitX < digitWidth; digitX++) {
         for (int digitY = 0; digitY < digitHeight; digitY++) {
@@ -97,7 +97,7 @@ public class Heightmap {
         mutableCell.Target = height;
       }
     }
-    Log();
+    // Log();
   }
 
   public void Grow(int digitIndex, int maskIndex) {
@@ -154,6 +154,12 @@ public class Heightmap {
 
   public void AddStateListener(UnityAction<Cell> listener) {
     stateEvent.AddListener(listener);
+  }
+
+  public void GetHeightmapCoordinates(int digitIndex, int x, int y, out int heightmapX, out int heightmapY) {
+    int reverseIndex = DigitIndexToInternalIndex(digitIndex);
+    heightmapX = reverseIndex * digitWidth + x;
+    heightmapY = y;
   }
 
   private int DigitIndexToInternalIndex(int digitIndex) {
