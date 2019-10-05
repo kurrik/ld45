@@ -8,18 +8,25 @@ public class Gameboard : MonoBehaviour {
 
   public NavMeshSurface surface;
   public Digit[] digits;
+  public GameObject pickupPrefab;
 
   public int Value {
     get => value;
     set => SetValue(value);
   }
 
+  // Public for editor UI.
   public void BakeNavigation() {
     bakeTicks += 1;
-    if (bakeTicks > 3) {
+    if (bakeTicks > 2) {
       surface.BuildNavMesh();
       bakeTicks = 0;
     }
+  }
+
+  public void OnPickupTouched(Pickup pickup) {
+    Value += 1;
+    GameObject.Destroy(pickup.gameObject);
   }
 
   private void Start() {
@@ -27,10 +34,20 @@ public class Gameboard : MonoBehaviour {
       digits[0].SetupInitialPlatform();
     }
     maxValue = ((int)Mathf.Pow(10.0f, digits.Length)) - 1;
+    SpawnPickup();
   }
 
   private void Update() {
     BakeNavigation();
+  }
+
+  private void SpawnPickup() {
+    if (digits.Length > 0) {
+      Platform platform = digits[0].FindPickupPlatform();
+      if (platform != null) {
+        platform.SpawnPickup(pickupPrefab);
+      }
+    }
   }
 
   private void SetValue(int newValue) {
@@ -47,5 +64,6 @@ public class Gameboard : MonoBehaviour {
       position += 1;
     }
     value = newValue;
+    SpawnPickup();
   }
 }
