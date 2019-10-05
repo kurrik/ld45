@@ -52,7 +52,9 @@ public class Platform : MonoBehaviour {
   }
 
   private void SetNavigationEnabled(bool value) {
-    navMeshModifier.ignoreFromBuild = !value;
+    if (navMeshModifier) {
+      navMeshModifier.ignoreFromBuild = !value;
+    }
   }
 
   private void Start() {
