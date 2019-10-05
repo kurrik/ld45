@@ -2,7 +2,7 @@
 
 public class Game : MonoBehaviour {
   public static Game instance = null;
-
+  public Gameboard Gameboard;
 
   public void Awake() {
     if (instance == null) {

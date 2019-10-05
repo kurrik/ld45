@@ -5,8 +5,12 @@ public class Gameboard : MonoBehaviour {
   private int value = 0;
   private int maxValue = 0;
   private int bakeTicks = 0;
+  private float descendDelayElapsed = 0.0f;
 
-  public Heightmap heightmap = new Heightmap();
+  public float descendDelay = 5.0f;
+  public float descendRate = 0.05f; 
+
+  public Heightmap Heightmap = new Heightmap();
   public NavMeshSurface surface;
   public Digit[] digits;
   public GameObject pickupPrefab;
@@ -31,8 +35,8 @@ public class Gameboard : MonoBehaviour {
   }
 
   private void Start() {
-    if (digits.Length > 0) {
-      digits[0].SetupInitialPlatform();
+    for (int i = 0; i < digits.Length; i++) {
+      digits[i].SetDigitIndex(i);
     }
     maxValue = ((int)Mathf.Pow(10.0f, digits.Length)) - 1;
     SpawnPickup();
@@ -40,6 +44,10 @@ public class Gameboard : MonoBehaviour {
 
   private void Update() {
     BakeNavigation();
+  }
+
+  private void FixedUpdate() {
+    Heightmap.Tick(Time.fixedDeltaTime);
   }
 
   private void SpawnPickup() {
