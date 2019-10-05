@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Heightmap {
   public const int digitWidth = 5;
@@ -8,6 +9,8 @@ public class Heightmap {
   public const int digits = 5;
   public const int unitsWide = digitWidth * digits;
   public const int unitsHigh = digitHeight;
+
+  private const float closeEnough = 0.00001f;
 
   public float minGlobalHeight = -0.1f;
   public float maxGlobalHeight = 5.0f;
@@ -17,20 +20,24 @@ public class Heightmap {
   public float growAmount = 0.2f;
   public float growRate = 0.4f;
 
-  private float globalHeight = 0.0f;
   private float tickDelayElapsed = 0.0f;
-  private float closeEnough = 0.00001f;
+  private UnityEvent<Cell> stateEvent = new StateEvent();
 
   private Cell[,] cells = new Cell[unitsHigh, unitsWide];
+
+  [System.Serializable]
+  public class StateEvent : UnityEvent<Cell> { }
 
   public enum State {
     Normal,
     Pending,
     Growing,
     Stopped,
+    Initializing,
   }
 
   public class Cell {
+    public int DigitIndex;
     public int IndexX;
     public int IndexY;
     public int DigitX;
@@ -39,12 +46,13 @@ public class Heightmap {
     public float Height;
     public float Target;
 
-    public Cell(int indexX, int indexY, int digitX, int digitY) {
+    public Cell(int digitIndex, int indexX, int indexY, int digitX, int digitY) {
+      DigitIndex = digitIndex;
       IndexX = indexX;
       IndexY = indexY;
       DigitX = digitX;
       DigitY = digitY;
-      State = State.Normal;
+      State = State.Initializing;
       Target = 0.0f;
       Height = 0.0f;
     }
@@ -56,7 +64,8 @@ public class Heightmap {
         for (int digitY = 0; digitY < digitHeight; digitY++) {
           int x = d * digitWidth + digitX;
           int y = digitY;
-          cells[y, x] = new Cell(x, y, digitX, digitY);
+          int digitIndex = InternalIndexToDigitIndex(d);
+          cells[y, x] = new Cell(digitIndex, x, y, digitX, digitY);
         }
       }
     }
@@ -66,7 +75,7 @@ public class Heightmap {
     if (digitIndex >= digits || digitIndex < 0) {
       yield break;
     }
-    int reverseIndex = digits - digitIndex - 1; // 0th digit is rightmost
+    int reverseIndex = DigitIndexToInternalIndex(digitIndex);
     int startX = reverseIndex * digitWidth;
     int endX = startX + digitWidth;
     int startY = 0;
@@ -82,7 +91,7 @@ public class Heightmap {
     foreach (Cell c in DigitCells(digitIndex)) {
       int maskValue = Masks.Digits[maskIndex, c.DigitY, c.DigitX];
       if (maskValue > 0) {
-        Debug.LogFormat("Setting height of {0},{1} to {2}", c.DigitX, c.DigitY, height);
+        // Debug.LogFormat("Setting height of {0},{1} to {2}", c.DigitX, c.DigitY, height);
         Cell mutableCell = GetMutableCell(c);
         mutableCell.Height = height;
         mutableCell.Target = height;
@@ -97,6 +106,17 @@ public class Heightmap {
       if (maskValue > 0) {
         Cell mutableCell = GetMutableCell(c);
         mutableCell.Target += growAmount;
+        SetState(mutableCell, State.Growing);
+      }
+    }
+  }
+
+  public void SetPending(int digitIndex, int maskIndex) {
+    foreach (Cell c in DigitCells(digitIndex)) {
+      int maskValue = Masks.Digits[maskIndex, c.DigitY, c.DigitX];
+      if (maskValue > 0) {
+        Cell mutableCell = GetMutableCell(c);
+        SetState(mutableCell, State.Pending);
       }
     }
   }
@@ -131,7 +151,26 @@ public class Heightmap {
       }
     }
   }
-  
+
+  public void AddStateListener(UnityAction<Cell> listener) {
+    stateEvent.AddListener(listener);
+  }
+
+  private int DigitIndexToInternalIndex(int digitIndex) {
+    return digits - digitIndex - 1; // 0th digit is rightmost
+  }
+
+  private int InternalIndexToDigitIndex(int internalIndex) {
+    return digits - internalIndex - 1;
+  }
+
+  private void SetState(Cell cell, State state) {
+    if (cell.State != state) {
+      cell.State = state;
+      stateEvent.Invoke(cell);
+    }
+  }
+
   private ref Cell GetMutableCell(Cell cell) {
     return ref cells[cell.IndexY, cell.IndexX];
   }
@@ -141,17 +180,20 @@ public class Heightmap {
     float magnitude = Mathf.Abs(delta);
     if (magnitude < closeEnough) {
       c.Height = c.Target;
+      if (c.State != State.Pending) {
+        SetState(c, State.Normal);
+      }
       return;
     }
     float maxUpdate = growRate * elapsed;
     if (magnitude < maxUpdate) {
       c.Height = c.Target;
-      c.State = State.Normal;
+      SetState(c, State.Normal);
     } else {
       float sign = delta > 0 ? 1 : -1;
       float adjustment = sign * maxUpdate;
       c.Height += adjustment;
-      c.State = State.Growing;
+      SetState(c, State.Growing);
     }
   }
 
@@ -161,14 +203,18 @@ public class Heightmap {
   }
 
   private void Clamp(Cell c) {
-    if (c.Height < minGlobalHeight) {
+    if (c.State == State.Pending && c.Height < 0.01f) {
+      // Float underwater pending items above sea level, but don't enable navigation.
+      c.Height = 0.01f;
+      c.Target = 0.01f;
+    } else if (c.Height < minGlobalHeight) {
       c.Height = minGlobalHeight;
       c.Target = minGlobalHeight;
-      c.State = State.Stopped;
+      SetState(c, State.Stopped);
     } else if (c.Height > maxGlobalHeight) {
       c.Height = maxGlobalHeight;
       c.Target = maxGlobalHeight;
-      c.State = State.Normal;
+      SetState(c, State.Normal);
     }
   }
 }
