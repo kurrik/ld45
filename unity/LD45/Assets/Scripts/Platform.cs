@@ -60,7 +60,7 @@ public class Platform : MonoBehaviour {
     );
     Pickup p = pickup.GetComponent<Pickup>();
     if (p) {
-      Debug.LogFormat("Setting points to {0}", value);
+      // Debug.LogFormat("Setting points to {0}", value);
       p.SetPoints(value);
     }
     return true;
