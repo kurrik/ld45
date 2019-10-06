@@ -3,6 +3,8 @@ using UnityEngine.SceneManagement;
 
 public class Game : MonoBehaviour {
   public static Game instance = null;
+  public const string GroundTag = "Ground";
+
   public Gameboard gameboard;
   public GameStateManager states;
   public EndState endState;

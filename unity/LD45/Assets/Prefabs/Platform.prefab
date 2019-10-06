@@ -142,8 +142,7 @@ MonoBehaviour:
   movingColor: {r: 1, g: 0.38, b: 0, a: 1}
   destinationColor: {r: 0.0046724924, g: 0.60367906, b: 0.990566, a: 0}
   playerPlatformColor: {r: 0.0039215623, g: 0.9015983, b: 0.99215686, a: 1}
-  HeightmapX: -1
-  HeightmapY: -1
+  Coordinates: {x: -1, y: -1}
 --- !u!65 &5524090522470505775
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -155,5 +154,5 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.8, y: 0.8, z: 0.8}
+  m_Size: {x: 0.6, y: 0.6, z: 0.6}
   m_Center: {x: 0.5, y: 0.5, z: 0.5}

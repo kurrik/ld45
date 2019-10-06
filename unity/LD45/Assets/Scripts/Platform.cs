@@ -42,8 +42,11 @@ public class Platform : MonoBehaviour {
     }
   }
 
-  public bool SpawnPickup(GameObject prefab) {
+  public bool SpawnPickup(GameObject prefab, int value) {
     if (pickup != null) {
+      return false;
+    }
+    if (isPlayerPlatform) {
       return false;
     }
     if (!IsNavigationEnabled()) {
@@ -55,6 +58,11 @@ public class Platform : MonoBehaviour {
       Quaternion.identity,
       transform
     );
+    Pickup p = pickup.GetComponent<Pickup>();
+    if (p) {
+      Debug.LogFormat("Setting points to {0}", value);
+      p.SetPoints(value);
+    }
     return true;
   }
 
