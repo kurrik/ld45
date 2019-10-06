@@ -155,15 +155,30 @@ public class Heightmap : MonoBehaviour {
     }
   }
 
-  public bool IsValidMove(int x, int y) {
-    if (y < 0 || y >= unitsHigh || x < 0 || x >= unitsWide) {
+  private Cell GetCellFromCoords(Vector2Int coords) {
+    if (coords.y < 0 || coords.y >= unitsHigh || coords.x < 0 || coords.x >= unitsWide) {
+      return null;
+    }
+    return cells[coords.y, coords.x];
+  }
+
+  public bool IsValidMove(Vector2Int current, Vector2Int next) {
+    // No invalid data.
+    Cell from = GetCellFromCoords(current);
+    Cell to = GetCellFromCoords(next);
+    if (from == null || to == null) {
       return false;
     }
-    Cell c = cells[y, x];
-    if (c == null) {
+    // Nothing stopped.
+    if (to.State == State.Stopped) {
       return false;
     }
-    if (c.State == State.Stopped) {
+    // Nothing super close to the water.
+    if (to.Height < 0.01f) {
+      return false;
+    }
+    // No large jumps up.
+    if ((to.Height - from.Height) > 0.5f) {
       return false;
     }
     return true;
