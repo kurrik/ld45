@@ -70,17 +70,10 @@ public class PlayerController : MonoBehaviour {
         transform.position = navigation.gameboard.HeightmapCoordToWorldCoord(playerPlatform.Coordinates);
       }
     }
-    if (Input.GetMouseButtonDown(0)) {
-      Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-      RaycastHit hit;
-      if (Physics.Raycast(ray, out hit, 1000.0f, Gameboard.PlatformLayer)) {
-        Platform platform = hit.collider.gameObject.GetComponentInParent<Platform>();
-        if (platform) {
-          // Debug.LogFormat("Raycast hit on platform: {0}", platform);
-          destinationSetEvent.Invoke(platform);
-        }
-      }
-    }
+  }
+
+  public void OnPlatformSelected(Platform platform) {
+    destinationSetEvent.Invoke(platform);
   }
 
   private void OnTriggerEnter(Collider other) {
