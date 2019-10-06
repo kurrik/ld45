@@ -31,6 +31,7 @@ public class Gameboard : MonoBehaviour {
   public void OnPickupTouched(Pickup pickup) {
     Value += pickup.points;
     Destroy(pickup.gameObject);
+    player.SpawnPoints(pickup.points);
     SpawnPickups(1);
   }
 
