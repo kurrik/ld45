@@ -28,6 +28,7 @@ public class Game : MonoBehaviour {
     endState.gameObject.SetActive(true);
     endState.SetPoints(gameboard.Value);
     states.PushState(endState);
+    sounds.PlayLossSound();
   }
 
   public void Reload() {
