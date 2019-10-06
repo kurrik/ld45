@@ -17,7 +17,7 @@ public class GameboardEditor : Editor {
     }
 
     if (GUILayout.Button("Debug Heightmap")) {
-      gameboard.Heightmap.Log();
+      gameboard.heightmap.Log();
     }
   }
 }

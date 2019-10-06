@@ -28,11 +28,6 @@ public class Navigation : MonoBehaviour {
     }
     Vector2Int start = new Vector2Int(a.HeightmapX, a.HeightmapY);
     Vector2Int end = new Vector2Int(b.HeightmapX, b.HeightmapY);
-    if (pathfinder.GetPath(start, end, out points)) {
-      Debug.LogFormat("Path: {0}", points.Length);
-      return true;
-    }
-    Debug.Log("Could not find path");
-    return false;
+    return pathfinder.GetPath(start, end, out points);
   }
 }
