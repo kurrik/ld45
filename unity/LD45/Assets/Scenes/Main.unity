@@ -197,6 +197,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Heightmap: {fileID: 600383121}
+  Navigation: {fileID: 600383122}
   Player: {fileID: 1156587420}
   surface: {fileID: 600383120}
   pickupPrefab: {fileID: 7554355372619955147, guid: 504b3455b22284215a86ce4588b6aaba,
@@ -281,8 +282,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 087effc5c446c40938697f64503075d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Heightmap: {fileID: 600383121}
-  Gameboard: {fileID: 600383118}
+  heightmap: {fileID: 600383121}
+  gameboard: {fileID: 600383118}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0

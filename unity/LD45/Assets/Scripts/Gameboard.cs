@@ -10,6 +10,7 @@ public class Gameboard : MonoBehaviour {
   private int bakeTicks = 0;
 
   public Heightmap Heightmap;
+  public Navigation Navigation;
   public PlayerController Player;
   public NavMeshSurface surface;
   public GameObject pickupPrefab;
@@ -54,6 +55,7 @@ public class Gameboard : MonoBehaviour {
     }
     destinationPlatform = platform;
     destinationPlatform.SetDestination(true);
+    CheckPath();
   }
 
   public void OnPlayerOnPlatform(Platform platform) {
@@ -62,6 +64,18 @@ public class Gameboard : MonoBehaviour {
     }
     playerPlatform = platform;
     playerPlatform.SetPlayerPlatform(true);
+    CheckPath();
+  }
+
+  public void CheckPath() {
+    if (playerPlatform && destinationPlatform) {
+      Vector2Int[] points;
+      if (Navigation.GetPoints(playerPlatform, destinationPlatform, out points)) {
+        foreach (Vector2Int point in points) {
+          Debug.LogFormat("Step: {0},{1}", point.x, point.y);
+        }
+      }
+    }
   }
 
   private void Start() {
