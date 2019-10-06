@@ -4,7 +4,6 @@ using UnityEngine.AI;
 
 public class PlayerController : MonoBehaviour {
   public Camera cam;
-  public NavMeshAgent agent;
   public float walkingRate = 3.0f;
 
   private UnityEvent<Platform> destinationSetEvent = new DestinationSetEvent();
