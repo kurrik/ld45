@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
-using UnityEngine.AI;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 public class Gameboard : MonoBehaviour {
   public static  int PlatformLayer = 9;
@@ -29,7 +30,7 @@ public class Gameboard : MonoBehaviour {
   public void OnPickupTouched(Pickup pickup) {
     Value += 1;
     Destroy(pickup.gameObject);
-    SpawnPickup();
+    SpawnPickups(1);
   }
 
   public void OnCellStateChanged(Heightmap.Cell cell) {
@@ -81,7 +82,7 @@ public class Gameboard : MonoBehaviour {
     CreatePlatforms(0);
     digitsCreated = 1;
     heightmap.SetHeight(0, 0, 0.6f);
-    SpawnPickup();
+    SpawnPickups(2);
     player.transform.position = new Vector3(-0.5f, 1.0f, 0.5f);
   }
 
@@ -101,16 +102,41 @@ public class Gameboard : MonoBehaviour {
     heightmap.Tick(Time.fixedDeltaTime);
   }
 
-  private void SpawnPickup() {
-    foreach (Heightmap.Cell h in heightmap.DigitCells(0)) {
-      if (Random.Range(0.0f, 1.0f) > 0.7f) {
-        Platform obj = platforms[h.IndexY, h.IndexX];
-        if (obj) {
-          obj.SpawnPickup(pickupPrefab);
-          return;
+  private void SpawnPickups(int count) {
+    List<Heightmap.Cell> cells = heightmap.SpawnableCells().ToList<Heightmap.Cell>();
+    int createdCount = 0;
+    for (int i = 0; i < cells.Count; i++) {
+      if (createdCount >= count) {
+        return;
+      }
+      int randomIndex = Random.Range(i + 1, cells.Count);
+      Heightmap.Cell randomCell = cells[randomIndex];
+      cells[randomIndex] = cells[i];
+      cells[i] = randomCell;
+      if (!playerPlatform) {
+        if (CreatePickupAtCell(randomCell)) {
+          createdCount += 1;
+          continue;
+        }
+      } else {
+        Vector2Int endCoordinates = new Vector2Int(randomCell.IndexX, randomCell.IndexY);
+        int length = 0;
+        if (navigation.HasPath(playerPlatform.Coordinates, endCoordinates, out length)) {
+          if (CreatePickupAtCell(randomCell)) {
+            createdCount += 1;
+            continue;
+          }
         }
       }
     }
+  }
+
+  private bool CreatePickupAtCell(Heightmap.Cell cell) {
+    Platform obj = platforms[cell.IndexY, cell.IndexX];
+    if (obj) {
+      return obj.SpawnPickup(pickupPrefab);
+    }
+    return false;
   }
 
   private void SetValue(int newValue) {
@@ -162,6 +188,7 @@ public class Gameboard : MonoBehaviour {
     yield return new WaitForSeconds(pendingSeconds);
     heightmap.Grow(digit, remainder);
   }
+
 
 #if UNITY_EDITOR
   private Color gizmoColor_ = new Color(1.0f, 0.0f, 1.0f, 0.5f);

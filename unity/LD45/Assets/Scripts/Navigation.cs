@@ -21,6 +21,16 @@ public class Navigation : MonoBehaviour {
     pathfinder = new HeightmapAStar(heightmap);
   }
 
+  public bool HasPath(Vector2Int start, Vector2Int end, out int length) {
+    Vector2Int[] points;
+    if (pathfinder.GetPath(start, end, out points)) {
+      length = points.Length;
+      return true;
+    }
+    length = -1;
+    return false;
+  }
+
   public bool GetPoints(Platform a, Platform b, out Vector2Int[] points) {
     points = null;
     if (pathfinder == null) {
