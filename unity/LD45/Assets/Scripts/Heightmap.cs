@@ -87,6 +87,17 @@ public class Heightmap : MonoBehaviour {
     }
   }
 
+  public IEnumerable<Cell> SpawnableCells() {
+    for (int x = 0; x < unitsWide; x++) {
+      for (int y = 0; y < unitsHigh; y++) {
+        Cell cell = cells[y, x];
+        if (cell.State != State.Stopped && cell.Height > 0.05f) {
+          yield return cell;
+        }
+      }
+    }
+  }
+
   public void SetHeight(int digitIndex, int maskIndex, float height) {
     foreach (Cell c in DigitCells(digitIndex)) {
       int maskValue = Masks.Digits[maskIndex, c.DigitY, c.DigitX];

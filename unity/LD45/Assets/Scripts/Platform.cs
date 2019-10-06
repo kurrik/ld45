@@ -5,6 +5,7 @@ public class Platform : MonoBehaviour {
   private bool isDestination = false;
   private bool isPlayerPlatform = false;
   private Color currentColor;
+  private GameObject pickup;
 
   public Color defaultColor = new Color(0.53f, 0.53f, 0.53f);
   public Color pendingColor = new Color(1.0f, 0.93f, .41f);
@@ -41,13 +42,20 @@ public class Platform : MonoBehaviour {
     }
   }
 
-  public void SpawnPickup(GameObject prefab) {
-    GameObject obj = Instantiate<GameObject>(
+  public bool SpawnPickup(GameObject prefab) {
+    if (pickup != null) {
+      return false;
+    }
+    if (!IsNavigationEnabled()) {
+      return false;
+    }
+    pickup = Instantiate<GameObject>(
       prefab,
       transform.position + prefab.transform.position,
       Quaternion.identity,
       transform
     );
+    return true;
   }
 
   public void SetDestination(bool state) {
@@ -79,6 +87,10 @@ public class Platform : MonoBehaviour {
 
   private void SetNavigationEnabled(bool value) {
     gameObject.SetActive(value);
+  }
+
+  private bool IsNavigationEnabled() {
+    return gameObject.activeSelf;
   }
 
   private void Start() {
