@@ -6,6 +6,7 @@ public class SplashState : MonoBehaviour, IGameState {
       gameObject.SetActive(false);
     } else {
       Game.instance.states.PushState(this);
+      Time.timeScale = 0.0f;
     }
   }
 
@@ -13,6 +14,7 @@ public class SplashState : MonoBehaviour, IGameState {
     if (Input.touchCount > 0 || Input.GetMouseButtonDown(0)) {
       states.PopState();
       gameObject.SetActive(false);
+      Time.timeScale = 1.0f;
     }
   }
 }

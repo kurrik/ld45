@@ -82,6 +82,10 @@ public class PlayerController : MonoBehaviour {
       // Debug.LogFormat("Player on platform: {0}", platform);
       playerOnPlatformEvent.Invoke(platform);
       playerPlatform = platform;
+    } else {
+      if (other.CompareTag("Ground")) {
+        Game.instance.End(); 
+      }
     }
   }
 }

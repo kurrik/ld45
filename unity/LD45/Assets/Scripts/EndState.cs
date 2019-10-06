@@ -15,9 +15,9 @@ public class EndState : MonoBehaviour, IGameState {
     if (!gameObject.activeSelf) {
       states.PopState();
     }
-    Debug.Log("End!");
     if (Input.touchCount > 0 || Input.GetMouseButtonDown(0)) {
       states.PopState();
+      Game.instance.Reload();
     }
   }
 

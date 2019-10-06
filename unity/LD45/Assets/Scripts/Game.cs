@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Game : MonoBehaviour {
   public static Game instance = null;
@@ -19,7 +20,17 @@ public class Game : MonoBehaviour {
     get { return ShowDebug && fastDebugStartup; }
   }
 
-  public void Awake() {
+  public void End() {
+    endState.gameObject.SetActive(true);
+    endState.SetPoints(gameboard.Value);
+    states.PushState(endState);
+  }
+
+  public void Reload() {
+    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+  }
+
+  private void Awake() {
     if (instance == null) {
       instance = this;
     } else if (instance != this) {
@@ -34,7 +45,7 @@ public class Game : MonoBehaviour {
     splashState.gameObject.SetActive(true);
   }
 
-  void Update() {
+  private void Update() {
     states.Current.StateUpdate(states);
   }
 }
