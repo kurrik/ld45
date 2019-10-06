@@ -207,6 +207,7 @@ MonoBehaviour:
     type: 3}
   platformParent: {fileID: 1977292773}
   pendingSeconds: 1
+  spawnDelaySeconds: 0.8
 --- !u!4 &600383119
 Transform:
   m_ObjectHideFlags: 0
@@ -489,13 +490,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: -0.44180536, y: 0.019863611, z: -0.0075508496, w: -0.89685917}
-  m_LocalPosition: {x: -4.3, y: 7.86, z: -2.09}
+  m_LocalRotation: {x: -0.3853786, y: 0.01514128, z: 0.0026989747, w: -0.9226304}
+  m_LocalPosition: {x: -4.27, y: 7.88, z: -3.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 52.446003, y: 357.277, z: -0.377}
+  m_LocalEulerAnglesHint: {x: 45.320004, y: 357.553, z: -1.3570001}
 --- !u!1 &1136697332
 GameObject:
   m_ObjectHideFlags: 0
@@ -710,6 +711,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 963194227}
   navigation: {fileID: 600383122}
+  pointsCollectedPrefab: {fileID: 8666784391754155873, guid: 08ebe00348a36495bbd5af70872a3a1e,
+    type: 3}
   walkingRate: 4
 --- !u!54 &1156587421
 Rigidbody:

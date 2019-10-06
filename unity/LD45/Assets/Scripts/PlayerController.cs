@@ -4,6 +4,7 @@ using UnityEngine.Events;
 public class PlayerController : MonoBehaviour {
   public Camera cam;
   public Navigation navigation;
+  public GameObject pointsCollectedPrefab;
   public float walkingRate = 3.0f;
 
   private UnityEvent<Platform> destinationSetEvent = new DestinationSetEvent();
@@ -28,6 +29,19 @@ public class PlayerController : MonoBehaviour {
 
   public void AddPlayerOnPlatformListener(UnityAction<Platform> listener) {
     playerOnPlatformEvent.AddListener(listener);
+  }
+
+  public void SpawnPoints(int points) {
+    GameObject obj = Instantiate<GameObject>(
+      pointsCollectedPrefab,
+      transform.position,
+      Quaternion.identity,
+      transform.parent
+    );
+    PointsCollected pc = obj.GetComponent<PointsCollected>();
+    if (pc) {
+      pc.Activate(transform.position, points);
+    }
   }
 
   public void SetPath(Vector2Int[] p) {
