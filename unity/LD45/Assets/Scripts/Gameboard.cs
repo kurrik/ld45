@@ -50,6 +50,7 @@ public class Gameboard : MonoBehaviour {
     Destroy(pickup.gameObject);
     player.SpawnPoints(pickup.points);
     Game.instance.shake.Shake();
+    Game.instance.sounds.PlayCoinSound();
     SpawnPickups(1);
   }
 
@@ -70,6 +71,7 @@ public class Gameboard : MonoBehaviour {
     if (destinationPlatform) {
       destinationPlatform.SetDestination(false);
     }
+    Game.instance.sounds.PlaySelectedSound();
     destinationPlatform = platform;
     destinationPlatform.SetDestination(true);
     CheckPath();
@@ -92,6 +94,7 @@ public class Gameboard : MonoBehaviour {
       } else {
         destinationPlatform.SetInvalidDestination();
         destinationPlatform = null;
+        Game.instance.sounds.PlayInvalidSound();
       }
     }
   }
@@ -139,6 +142,10 @@ public class Gameboard : MonoBehaviour {
   private IEnumerator DelaySpawnPickups(int count) {
     List<Heightmap.Cell> cells = heightmap.SpawnableCells().ToList<Heightmap.Cell>();
     int createdCount = 0;
+    if (cells.Count == 0) {
+      // Nothing to do.
+      yield break;
+    }
     for (int i = 0; i < cells.Count; i++) {
       if (createdCount >= count) {
         yield break;

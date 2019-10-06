@@ -10,6 +10,7 @@ public class Game : MonoBehaviour {
   public EndState endState;
   public SplashState splashState;
   public ScreenShake shake;
+  public Sounds sounds;
 
   public bool fastDebugStartup = false;
   private bool showDebug;
