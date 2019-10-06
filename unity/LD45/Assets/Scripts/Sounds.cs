@@ -18,7 +18,7 @@ public class Sounds : MonoBehaviour {
     if (coinSound) {
       source.clip = coinSound;
       source.pitch = 1.0f + Random.Range(-0.1f, 0.1f);
-      source.volume = 0.9f + Random.Range(-0.2f, 0.2f);
+      source.volume = 1.0f + Random.Range(-0.1f, 0.1f);
       source.Play();
     }
   }
@@ -27,7 +27,7 @@ public class Sounds : MonoBehaviour {
     if (invalidSound) {
       source.clip = invalidSound;
       source.pitch = 1.0f + Random.Range(-0.1f, 0.1f);
-      source.volume = 1.0f + Random.Range(-0.1f, 0.1f);
+      source.volume = 1.0f + Random.Range(0.0f, 0.2f);
       source.Play();
     }
   }
@@ -36,7 +36,7 @@ public class Sounds : MonoBehaviour {
     if (selectedSound) {
       source.clip = selectedSound;
       source.pitch = 1.0f + Random.Range(-0.1f, 0.1f);
-      source.volume = 1.0f + Random.Range(-0.1f, 0.1f);
+      source.volume = 1.0f + Random.Range(0.0f, 0.1f);
       source.Play();
     }
   }
@@ -44,8 +44,8 @@ public class Sounds : MonoBehaviour {
   public void PlayLossSound() {
     if (lossSound) {
       source.clip = lossSound;
-      source.pitch = 1.0f + Random.Range(-0.1f, 0.1f);
-      source.volume = 1.0f + Random.Range(-0.1f, 0.1f);
+      source.pitch = 1.0f;
+      source.volume = 1.0f;
       source.Play();
     }
   }
