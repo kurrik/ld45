@@ -105,5 +105,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e151c3b47c584ee59dfafd8570bf483, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  travelDistance: 0.8
+  travelDistance: 1.5
   travelDuration: 0.4

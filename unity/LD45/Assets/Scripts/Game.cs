@@ -9,6 +9,7 @@ public class Game : MonoBehaviour {
   public GameStateManager states;
   public EndState endState;
   public SplashState splashState;
+  public ScreenShake shake;
 
   public bool fastDebugStartup = false;
   private bool showDebug;

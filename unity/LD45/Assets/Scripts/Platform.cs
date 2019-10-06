@@ -3,11 +3,12 @@ using System.Collections;
 
 public class Platform : MonoBehaviour {
   private Renderer childRenderer;
+  private bool isNavigationEnabled = true;
   private bool isDestination = false;
   private bool isInvalid = false;
   private bool isPlayerPlatform = false;
   private Color currentColor;
-  private GameObject pickup;
+  public GameObject pickup;
 
   public Color defaultColor = new Color(0.53f, 0.53f, 0.53f);
   public Color invalidColor;
@@ -66,6 +67,7 @@ public class Platform : MonoBehaviour {
     if (p) {
       // Debug.LogFormat("Setting points to {0}", value);
       p.SetPoints(value);
+      p.Coordinates = Coordinates;
     }
     return true;
   }
@@ -107,7 +109,8 @@ public class Platform : MonoBehaviour {
   }
 
   private void SetNavigationEnabled(bool value) {
-    gameObject.SetActive(value);
+    // gameObject.SetActive(value);
+    isNavigationEnabled = value;
   }
 
   private bool IsNavigationEnabled() {

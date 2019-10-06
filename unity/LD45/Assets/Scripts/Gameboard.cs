@@ -18,7 +18,12 @@ public class Gameboard : MonoBehaviour {
   public GameObject platformParent;
   public float pendingSeconds = 1.0f;
   public float spawnDelaySeconds = 0.8f;
+  public float initialPointsSweeperDelay = 10.0f;
+  public float pointsSweeperDelay = 2.0f;
 
+  private int pickupCount = 0;
+  private const int maxPickups = 10;
+  private Pickup[] pickups = new Pickup[maxPickups];
   private Platform[,] platforms = new Platform[Heightmap.unitsHigh, Heightmap.unitsWide];
   private Platform destinationPlatform;
   private Platform playerPlatform;
@@ -28,10 +33,23 @@ public class Gameboard : MonoBehaviour {
     set => SetValue(value);
   }
 
+  public void OnPickupCreated(Pickup pickup) {
+    if (!pickup) {
+      return;
+    }
+    int index = pickupCount % maxPickups;
+    if (pickups[index]) {
+      Destroy(pickups[index].gameObject);
+    }
+    pickups[index] = pickup;
+    pickupCount++;
+  }
+
   public void OnPickupTouched(Pickup pickup) {
     Value += pickup.points;
     Destroy(pickup.gameObject);
     player.SpawnPoints(pickup.points);
+    Game.instance.shake.Shake();
     SpawnPickups(1);
   }
 
@@ -95,6 +113,7 @@ public class Gameboard : MonoBehaviour {
     heightmap.SetHeight(0, 0, 0.6f);
     SpawnPickups(2);
     player.transform.position = new Vector3(-0.5f, 1.0f, 0.5f);
+    StartCoroutine(PickupsSweeper());
   }
 
   private void Update() {
@@ -156,7 +175,11 @@ public class Gameboard : MonoBehaviour {
   private bool CreatePickupAtCell(Heightmap.Cell cell, int points) {
     Platform obj = platforms[cell.IndexY, cell.IndexX];
     if (obj) {
-      return obj.SpawnPickup(pickupPrefab, points);
+      if (obj.SpawnPickup(pickupPrefab, points)) {
+        OnPickupCreated(obj.pickup.GetComponent<Pickup>());
+        return true;
+      }
+      return false;
     }
     return false;
   }
@@ -211,6 +234,30 @@ public class Gameboard : MonoBehaviour {
     heightmap.Grow(digit, remainder);
   }
 
+  private IEnumerator PickupsSweeper() {
+    yield return new WaitForSeconds(initialPointsSweeperDelay);
+    int length;
+    while (true) {
+      yield return new WaitForSeconds(pointsSweeperDelay);
+      if (playerPlatform) {
+        bool foundValidPickup = false;
+        for (int i = 0; i < maxPickups; i++) {
+          Pickup pickup = pickups[i];
+          if (!pickup) {
+            continue;
+          }
+          if (navigation.HasPath(playerPlatform.Coordinates, pickup.Coordinates, out length)) {
+            foundValidPickup = true;
+            break;
+          }
+        }
+        if (!foundValidPickup) {
+          Debug.Log("Found no accessible pickups, spawning one");
+          SpawnPickups(1);
+        }
+      }
+    }
+  }
 
 #if UNITY_EDITOR
   private Color gizmoColor_ = new Color(1.0f, 0.0f, 1.0f, 0.5f);

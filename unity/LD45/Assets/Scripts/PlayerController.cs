@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour {
     );
     PointsCollected pc = obj.GetComponent<PointsCollected>();
     if (pc) {
-      pc.Activate(transform.position, points);
+      pc.Activate(transform, points);
     }
   }
 

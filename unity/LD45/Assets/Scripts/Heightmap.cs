@@ -12,10 +12,10 @@ public class Heightmap : MonoBehaviour {
 
   private const float closeEnough = 0.00001f;
 
-  public float minGlobalHeight = -1.0f;
-  public float maxGlobalHeight = 5.0f;
+  public float minGlobalHeight = -2.0f;
+  public float maxGlobalHeight = 3.0f;
   public float tickDelay = 5.0f;
-  public float tickRate = -0.05f;
+  public float tickRate = -0.07f;
   public float growDelay = 1.0f;
   public float growAmount = 0.2f;
   public float growRate = 0.4f;
@@ -185,7 +185,7 @@ public class Heightmap : MonoBehaviour {
       return false;
     }
     // Nothing super close to the water.
-    if (to.Height < 0.01f) {
+    if (to.Height < 0.00f) {
       return false;
     }
     // No large jumps up.
