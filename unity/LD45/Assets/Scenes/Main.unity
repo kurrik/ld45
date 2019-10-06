@@ -196,9 +196,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b23e4a7ccb51a46ceaa9df02446993b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Heightmap: {fileID: 600383121}
-  Navigation: {fileID: 600383122}
-  Player: {fileID: 1156587420}
+  heightmap: {fileID: 600383121}
+  navigation: {fileID: 600383122}
+  player: {fileID: 1156587420}
   surface: {fileID: 600383120}
   pickupPrefab: {fileID: 7554355372619955147, guid: 504b3455b22284215a86ce4588b6aaba,
     type: 3}
@@ -641,7 +641,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1156587414}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.5, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 600383119}
@@ -683,6 +683,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 963194227}
   agent: {fileID: 1156587419}
+  walkingRate: 4
 --- !u!54 &1156587421
 Rigidbody:
   m_ObjectHideFlags: 0

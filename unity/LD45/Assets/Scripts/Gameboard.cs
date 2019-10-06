@@ -8,10 +8,11 @@ public class Gameboard : MonoBehaviour {
   private int digitsCreated = 0;
   private int value = 0;
   private int bakeTicks = 0;
+  private Vector3 playerOffset = new Vector3(0.5f, 0.5f, 0.5f);
 
-  public Heightmap Heightmap;
-  public Navigation Navigation;
-  public PlayerController Player;
+  public Heightmap heightmap;
+  public Navigation navigation;
+  public PlayerController player;
   public NavMeshSurface surface;
   public GameObject pickupPrefab;
   public GameObject platformPrefab;
@@ -70,28 +71,37 @@ public class Gameboard : MonoBehaviour {
   public void CheckPath() {
     if (playerPlatform && destinationPlatform) {
       Vector2Int[] points;
-      if (Navigation.GetPoints(playerPlatform, destinationPlatform, out points)) {
+      if (navigation.GetPoints(playerPlatform, destinationPlatform, out points)) {
+        Vector3[] path = new Vector3[points.Length];
+        int i = 0;
         foreach (Vector2Int point in points) {
-          Debug.LogFormat("Step: {0},{1}", point.x, point.y);
+          path[i] = HeightmapCoordToWorldCoord(point);
+          i++;
         }
+        player.SetPath(path);
       }
     }
   }
 
+  private Vector3 HeightmapCoordToWorldCoord(Vector2Int hc) {
+    Platform platform = platforms[hc.y, hc.x];
+    return platform.transform.position + playerOffset;
+  }
+
   private void Start() {
-    Player.AddDestinationSetListener(OnDestinationSet);
-    Player.AddPlayerOnPlatformListener(OnPlayerOnPlatform);
-    Heightmap.AddStateListener(OnCellStateChanged);
+    player.AddDestinationSetListener(OnDestinationSet);
+    player.AddPlayerOnPlatformListener(OnPlayerOnPlatform);
+    heightmap.AddStateListener(OnCellStateChanged);
     CreatePlatforms(0);
     digitsCreated = 1;
-    Heightmap.SetHeight(0, 0, 0.6f);
+    heightmap.SetHeight(0, 0, 0.6f);
     SpawnPickup();
   }
 
   private void Update() {
-    BakeNavigation();
+    //BakeNavigation();
     for (int i = 0; i < digitsCreated; i++) {
-      foreach (Heightmap.Cell h in Heightmap.DigitCells(i)) {
+      foreach (Heightmap.Cell h in heightmap.DigitCells(i)) {
         Platform platform = platforms[h.IndexY, h.IndexX];
         if (platform) {
           // Debug.LogFormat("Setting fixed platform height of {0},{1} (global: {4},{5}) to {2} (target: {3})", h.DigitX, h.DigitY, h.Height, h.Target, h.IndexX, h.IndexY);
@@ -102,11 +112,11 @@ public class Gameboard : MonoBehaviour {
   }
 
   private void FixedUpdate() {
-    Heightmap.Tick(Time.fixedDeltaTime);
+    heightmap.Tick(Time.fixedDeltaTime);
   }
 
   private void SpawnPickup() {
-    foreach (Heightmap.Cell h in Game.instance.Gameboard.Heightmap.DigitCells(0)) {
+    foreach (Heightmap.Cell h in heightmap.DigitCells(0)) {
       if (Random.Range(0.0f, 1.0f) > 0.7f) {
         Platform obj = platforms[h.IndexY, h.IndexX];
         if (obj) {
@@ -149,7 +159,7 @@ public class Gameboard : MonoBehaviour {
           Quaternion.identity,
           platformParent.transform
         ).GetComponent<Platform>();
-        Heightmap.GetHeightmapCoordinates(digit, x, y, out obj.HeightmapX, out obj.HeightmapY);
+        heightmap.GetHeightmapCoordinates(digit, x, y, out obj.HeightmapX, out obj.HeightmapY);
         obj.gameObject.layer = Gameboard.PlatformLayer;
         platforms[obj.HeightmapY, obj.HeightmapX] = obj;
       }
@@ -158,9 +168,9 @@ public class Gameboard : MonoBehaviour {
 
   private IEnumerator AnimateValue(int digit, int remainder) {
     remainder = remainder % 10;
-    Heightmap.SetPending(digit, remainder);
+    heightmap.SetPending(digit, remainder);
     yield return new WaitForSeconds(pendingSeconds);
-    Heightmap.Grow(digit, remainder);
+    heightmap.Grow(digit, remainder);
   }
 
 #if UNITY_EDITOR
