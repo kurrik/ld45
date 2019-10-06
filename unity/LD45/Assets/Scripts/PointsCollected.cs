@@ -9,7 +9,6 @@ public class PointsCollected : MonoBehaviour {
   private TextMesh textMesh;
 
   public void Activate(Vector3 start, int points) {
-
     StartCoroutine(Animate(start, points));
   }
 
@@ -29,7 +28,7 @@ public class PointsCollected : MonoBehaviour {
   private IEnumerator Animate(Vector3 start, int points) {
     yield return new WaitForEndOfFrame();
     textMesh.text = string.Format("+{0}", points);
-    float startPosition = start.y + Random.Range(1.5f, 2.5f);
+    float startPosition = start.y;
     float endPosition = startPosition + travelDistance + Random.Range(-0.2f, 0.2f);
     float duration = travelDuration + Random.Range(-0.1f, 0.1f);
     float elapsed = 0.0f;
