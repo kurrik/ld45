@@ -17,6 +17,7 @@ public class Gameboard : MonoBehaviour {
   public GameObject platformPrefab;
   public GameObject platformParent;
   public float pendingSeconds = 1.0f;
+  public float spawnDelaySeconds = 0.8f;
 
   private Platform[,] platforms = new Platform[Heightmap.unitsHigh, Heightmap.unitsWide];
   private Platform destinationPlatform;
@@ -28,7 +29,13 @@ public class Gameboard : MonoBehaviour {
   }
 
   public void OnPickupTouched(Pickup pickup) {
-    Value += 1;
+    Value += pickup.points;
+    Destroy(pickup.gameObject);
+    SpawnPickups(1);
+  }
+
+  public void OnPickupDisabled(Pickup pickup) {
+    Debug.Log("Pickup was disabled!");
     Destroy(pickup.gameObject);
     SpawnPickups(1);
   }
@@ -103,38 +110,49 @@ public class Gameboard : MonoBehaviour {
   }
 
   private void SpawnPickups(int count) {
+    StartCoroutine(DelaySpawnPickups(count));
+  }
+
+  private IEnumerator DelaySpawnPickups(int count) {
     List<Heightmap.Cell> cells = heightmap.SpawnableCells().ToList<Heightmap.Cell>();
     int createdCount = 0;
     for (int i = 0; i < cells.Count; i++) {
       if (createdCount >= count) {
-        return;
+        yield break;
       }
+      yield return new WaitForSeconds(spawnDelaySeconds);
       int randomIndex = Random.Range(i + 1, cells.Count);
       Heightmap.Cell randomCell = cells[randomIndex];
       cells[randomIndex] = cells[i];
       cells[i] = randomCell;
       if (!playerPlatform) {
-        if (CreatePickupAtCell(randomCell)) {
+        if (CreatePickupAtCell(randomCell, 1)) {
           createdCount += 1;
           continue;
         }
       } else {
         Vector2Int endCoordinates = new Vector2Int(randomCell.IndexX, randomCell.IndexY);
         int length = 0;
+        int points = 1;
         if (navigation.HasPath(playerPlatform.Coordinates, endCoordinates, out length)) {
-          if (CreatePickupAtCell(randomCell)) {
-            createdCount += 1;
-            continue;
-          }
+          // There's a path, lower value.
+          points = Mathf.Max(8, Random.Range(1, length)) - 7;
+        } else if (Random.Range(0.0f, 1.0f) > 0.9f) {
+          // No path, go nuts.
+          points = Random.Range(2, 20);
+        }
+        if (CreatePickupAtCell(randomCell, points)) {
+          createdCount += 1;
+          continue;
         }
       }
     }
   }
 
-  private bool CreatePickupAtCell(Heightmap.Cell cell) {
+  private bool CreatePickupAtCell(Heightmap.Cell cell, int points) {
     Platform obj = platforms[cell.IndexY, cell.IndexX];
     if (obj) {
-      return obj.SpawnPickup(pickupPrefab);
+      return obj.SpawnPickup(pickupPrefab, points);
     }
     return false;
   }

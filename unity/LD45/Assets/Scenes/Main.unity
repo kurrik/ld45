@@ -236,7 +236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minGlobalHeight: -0.1
-  maxGlobalHeight: 5
+  maxGlobalHeight: 3
   tickDelay: 5
   tickRate: -0.07
   growDelay: 1
