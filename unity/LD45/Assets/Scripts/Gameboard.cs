@@ -71,6 +71,9 @@ public class Gameboard : MonoBehaviour {
       Vector2Int[] points;
       if (navigation.GetPoints(playerPlatform, destinationPlatform, out points)) {
         player.SetPath(points);
+      } else {
+        destinationPlatform.SetInvalidDestination();
+        destinationPlatform = null;
       }
     }
   }
