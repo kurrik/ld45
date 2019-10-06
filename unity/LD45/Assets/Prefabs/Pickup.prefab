@@ -103,7 +103,6 @@ GameObject:
   - component: {fileID: 8955814524009727526}
   - component: {fileID: 5394799135553800840}
   - component: {fileID: 3041230941732482939}
-  - component: {fileID: -1188094241072109892}
   m_Layer: 8
   m_Name: Pickup
   m_TagString: Untagged
@@ -152,19 +151,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationRate: 200
---- !u!114 &-1188094241072109892
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7554355372619955147}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_OverrideArea: 0
-  m_Area: 0
-  m_IgnoreFromBuild: 1
-  m_AffectedAgents: 

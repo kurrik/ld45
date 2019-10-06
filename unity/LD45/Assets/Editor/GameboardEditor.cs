@@ -12,10 +12,6 @@ public class GameboardEditor : Editor {
       gameboard.Value += 1;
     }
 
-    if (GUILayout.Button("Bake Navigation")) {
-      gameboard.BakeNavigation();
-    }
-
     if (GUILayout.Button("Debug Heightmap")) {
       gameboard.heightmap.Log();
     }
