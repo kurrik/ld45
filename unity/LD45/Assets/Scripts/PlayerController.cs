@@ -83,7 +83,7 @@ public class PlayerController : MonoBehaviour {
       playerOnPlatformEvent.Invoke(platform);
       playerPlatform = platform;
     } else {
-      if (other.CompareTag("Ground")) {
+      if (other.CompareTag(Game.GroundTag)) {
         Game.instance.End(); 
       }
     }
