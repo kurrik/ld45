@@ -153,7 +153,7 @@ public class Gameboard : MonoBehaviour {
       digit += 1;
     }
     value = newValue;
-    Debug.LogFormat("Value {0}", newValue);
+    // Debug.LogFormat("Value {0}", newValue);
   }
 
   private void CreatePlatforms(int digit) {
