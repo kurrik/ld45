@@ -7,13 +7,11 @@ public class Gameboard : MonoBehaviour {
 
   private int digitsCreated = 0;
   private int value = 0;
-  private int bakeTicks = 0;
   private Vector3 playerOffset = new Vector3(0.5f, 0.5f, 0.5f);
 
   public Heightmap heightmap;
   public Navigation navigation;
   public PlayerController player;
-  public NavMeshSurface surface;
   public GameObject pickupPrefab;
   public GameObject platformPrefab;
   public GameObject platformParent;
@@ -26,15 +24,6 @@ public class Gameboard : MonoBehaviour {
   public int Value {
     get => value;
     set => SetValue(value);
-  }
-
-  // Public for editor UI.
-  public void BakeNavigation() {
-    bakeTicks += 1;
-    if (bakeTicks > 2) {
-      surface.BuildNavMesh();
-      bakeTicks = 0;
-    }
   }
 
   public void OnPickupTouched(Pickup pickup) {
@@ -99,7 +88,6 @@ public class Gameboard : MonoBehaviour {
   }
 
   private void Update() {
-    //BakeNavigation();
     for (int i = 0; i < digitsCreated; i++) {
       foreach (Heightmap.Cell h in heightmap.DigitCells(i)) {
         Platform platform = platforms[h.IndexY, h.IndexX];

@@ -1,9 +1,6 @@
 ﻿using UnityEngine;
-using UnityEngine.AI;
 
-[RequireComponent(typeof(NavMeshModifier))]
 public class Platform : MonoBehaviour {
-  private NavMeshModifier navMeshModifier;
   private Renderer childRenderer;
   private bool isDestination = false;
   private bool isPlayerPlatform = false;
@@ -82,13 +79,10 @@ public class Platform : MonoBehaviour {
   }
 
   private void SetNavigationEnabled(bool value) {
-    if (navMeshModifier) {
-      navMeshModifier.ignoreFromBuild = !value;
-    }
+    gameObject.SetActive(value);
   }
 
   private void Start() {
-    navMeshModifier = GetComponent<NavMeshModifier>();
     childRenderer = GetComponentInChildren<Renderer>();
     SetColor(defaultColor);
   }
