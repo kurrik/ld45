@@ -1,17 +1,21 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class Platform : MonoBehaviour {
   private Renderer childRenderer;
   private bool isDestination = false;
+  private bool isInvalid = false;
   private bool isPlayerPlatform = false;
   private Color currentColor;
   private GameObject pickup;
 
   public Color defaultColor = new Color(0.53f, 0.53f, 0.53f);
+  public Color invalidColor;
   public Color pendingColor = new Color(1.0f, 0.93f, .41f);
   public Color movingColor = new Color(1.0f, .38f, 0.0f);
   public Color destinationColor = new Color(0.00f, 0.60f, 0.99f);
   public Color playerPlatformColor = new Color(0.00f, 0.90f, 0.99f);
+  public float invalidDuration = 0.4f;
 
   public Vector2Int Coordinates = new Vector2Int(-1, -1);
 
@@ -71,6 +75,13 @@ public class Platform : MonoBehaviour {
     CommitColor();
   }
 
+  public void SetInvalidDestination() {
+    isDestination = false;
+    isInvalid = true;
+    CommitColor();
+    StartCoroutine(RemoveInvalid());
+  }
+
   public void SetPlayerPlatform(bool state) {
     isPlayerPlatform = state;
     CommitColor();
@@ -83,7 +94,9 @@ public class Platform : MonoBehaviour {
 
   private void CommitColor() {
     Color color = currentColor;
-    if (isDestination) {
+    if (isInvalid) {
+      color = invalidColor;
+    } else if (isDestination) {
       color = destinationColor;
     } else if (isPlayerPlatform) {
       color = playerPlatformColor;
@@ -104,5 +117,11 @@ public class Platform : MonoBehaviour {
   private void Start() {
     childRenderer = GetComponentInChildren<Renderer>();
     SetColor(defaultColor);
+  }
+
+  private IEnumerator RemoveInvalid() {
+    yield return new WaitForSeconds(invalidDuration);
+    isInvalid = false;
+    CommitColor();
   }
 }

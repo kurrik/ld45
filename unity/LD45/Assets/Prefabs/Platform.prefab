@@ -138,10 +138,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultColor: {r: 0.53, g: 0.53, b: 0.53, a: 1}
+  invalidColor: {r: 1, g: 0.65707195, b: 0.6367924, a: 0}
   pendingColor: {r: 1, g: 0.93, b: 0.41, a: 1}
   movingColor: {r: 1, g: 0.38, b: 0, a: 1}
   destinationColor: {r: 0.0046724924, g: 0.60367906, b: 0.990566, a: 0}
   playerPlatformColor: {r: 0.0039215623, g: 0.9015983, b: 0.99215686, a: 1}
+  invalidDuration: 0.4
   Coordinates: {x: -1, y: -1}
 --- !u!65 &5524090522470505775
 BoxCollider:
