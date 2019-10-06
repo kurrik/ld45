@@ -6,6 +6,7 @@ public class Sounds : MonoBehaviour {
   public AudioClip coinSound;
   public AudioClip invalidSound;
   public AudioClip selectedSound;
+  public AudioClip lossSound;
 
   private AudioSource source;
 
@@ -34,6 +35,15 @@ public class Sounds : MonoBehaviour {
   public void PlaySelectedSound() {
     if (selectedSound) {
       source.clip = selectedSound;
+      source.pitch = 1.0f + Random.Range(-0.1f, 0.1f);
+      source.volume = 1.0f + Random.Range(-0.1f, 0.1f);
+      source.Play();
+    }
+  }
+
+  public void PlayLossSound() {
+    if (lossSound) {
+      source.clip = lossSound;
       source.pitch = 1.0f + Random.Range(-0.1f, 0.1f);
       source.volume = 1.0f + Random.Range(-0.1f, 0.1f);
       source.Play();
