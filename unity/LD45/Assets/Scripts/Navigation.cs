@@ -26,8 +26,8 @@ public class Navigation : MonoBehaviour {
     if (pathfinder == null) {
       return false;
     }
-    Vector2Int start = new Vector2Int(a.HeightmapX, a.HeightmapY);
-    Vector2Int end = new Vector2Int(b.HeightmapX, b.HeightmapY);
+    Vector2Int start = a.Coordinates;
+    Vector2Int end = b.Coordinates;
     return pathfinder.GetPath(start, end, out points);
   }
 }

@@ -61,18 +61,12 @@ public class Gameboard : MonoBehaviour {
     if (playerPlatform && destinationPlatform) {
       Vector2Int[] points;
       if (navigation.GetPoints(playerPlatform, destinationPlatform, out points)) {
-        Vector3[] path = new Vector3[points.Length];
-        int i = 0;
-        foreach (Vector2Int point in points) {
-          path[i] = HeightmapCoordToWorldCoord(point);
-          i++;
-        }
-        player.SetPath(path);
+        player.SetPath(points);
       }
     }
   }
 
-  private Vector3 HeightmapCoordToWorldCoord(Vector2Int hc) {
+  public Vector3 HeightmapCoordToWorldCoord(Vector2Int hc) {
     Platform platform = platforms[hc.y, hc.x];
     return platform.transform.position + playerOffset;
   }
@@ -151,9 +145,13 @@ public class Gameboard : MonoBehaviour {
           Quaternion.identity,
           platformParent.transform
         ).GetComponent<Platform>();
-        heightmap.GetHeightmapCoordinates(digit, x, y, out obj.HeightmapX, out obj.HeightmapY);
+        int xCoord;
+        int yCoord;
+        heightmap.GetHeightmapCoordinates(digit, x, y, out xCoord, out yCoord);
+        obj.Coordinates.x = xCoord;
+        obj.Coordinates.y = yCoord;
         obj.gameObject.layer = Gameboard.PlatformLayer;
-        platforms[obj.HeightmapY, obj.HeightmapX] = obj;
+        platforms[obj.Coordinates.y, obj.Coordinates.x] = obj;
       }
     }
   }

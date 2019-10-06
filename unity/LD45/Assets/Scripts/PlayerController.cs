@@ -3,15 +3,18 @@ using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour {
   public Camera cam;
+  public Navigation navigation;
   public float walkingRate = 3.0f;
 
   private UnityEvent<Platform> destinationSetEvent = new DestinationSetEvent();
   private UnityEvent<Platform> playerOnPlatformEvent = new DestinationSetEvent();
 
+  private Platform playerPlatform;
+
   private int pathIndex;
   private Vector3 pathStart;
   private Vector3 pathNext;
-  private Vector3[] path;
+  private Vector2Int[] path;
 
   [System.Serializable]
   public class DestinationSetEvent : UnityEvent<Platform> { }
@@ -27,7 +30,7 @@ public class PlayerController : MonoBehaviour {
     playerOnPlatformEvent.AddListener(listener);
   }
 
-  public void SetPath(Vector3[] p) {
+  public void SetPath(Vector2Int[] p) {
     if (p.Length > 0) {
       path = p;
       pathIndex = -1;
@@ -42,7 +45,7 @@ public class PlayerController : MonoBehaviour {
     if (path != null) {
       pathIndex++;
       if (pathIndex < path.Length) {
-        pathNext = path[pathIndex];
+        pathNext = navigation.gameboard.HeightmapCoordToWorldCoord(path[pathIndex]);
       } else {
         path = null;
         pathNext = pathStart;
@@ -62,6 +65,10 @@ public class PlayerController : MonoBehaviour {
     }
     if (path != null) {
       transform.position = Vector3.MoveTowards(transform.position, pathNext, walkingRate * Time.deltaTime);
+    } else {
+      if (playerPlatform) {
+        transform.position = navigation.gameboard.HeightmapCoordToWorldCoord(playerPlatform.Coordinates);
+      }
     }
     if (Input.GetMouseButtonDown(0)) {
       Ray ray = cam.ScreenPointToRay(Input.mousePosition);
@@ -81,6 +88,7 @@ public class PlayerController : MonoBehaviour {
     if (platform) {
       // Debug.LogFormat("Player on platform: {0}", platform);
       playerOnPlatformEvent.Invoke(platform);
+      playerPlatform = platform;
     }
   }
 }

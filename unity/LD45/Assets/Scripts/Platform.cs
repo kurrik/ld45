@@ -12,8 +12,7 @@ public class Platform : MonoBehaviour {
   public Color destinationColor = new Color(0.00f, 0.60f, 0.99f);
   public Color playerPlatformColor = new Color(0.00f, 0.90f, 0.99f);
 
-  public int HeightmapX = -1;
-  public int HeightmapY = -1;
+  public Vector2Int Coordinates = new Vector2Int(-1, -1);
 
   public void SetHeight(float height) {
     Vector3 pos = transform.position;
