@@ -152,6 +152,20 @@ public class Heightmap : MonoBehaviour {
     }
   }
 
+  public bool IsValidMove(int x, int y) {
+    if (y < 0 || y >= unitsHigh || x < 0 || x >= unitsWide) {
+      return false;
+    }
+    Cell c = cells[y, x];
+    if (c == null) {
+      return false;
+    }
+    if (c.State == State.Stopped) {
+      return false;
+    }
+    return true;
+  }
+
   public void AddStateListener(UnityAction<Cell> listener) {
     stateEvent.AddListener(listener);
   }
