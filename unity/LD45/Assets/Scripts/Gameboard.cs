@@ -77,14 +77,18 @@ public class Gameboard : MonoBehaviour {
     return platform.transform.position + playerOffset;
   }
 
-  private void Start() {
+  private void Awake() {
     player.AddDestinationSetListener(OnDestinationSet);
     player.AddPlayerOnPlatformListener(OnPlayerOnPlatform);
     heightmap.AddStateListener(OnCellStateChanged);
+  }
+
+  private void Start() {
     CreatePlatforms(0);
     digitsCreated = 1;
     heightmap.SetHeight(0, 0, 0.6f);
     SpawnPickup();
+    player.transform.position = new Vector3(-0.5f, 1.0f, 0.5f);
   }
 
   private void Update() {

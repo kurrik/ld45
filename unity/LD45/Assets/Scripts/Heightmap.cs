@@ -46,15 +46,15 @@ public class Heightmap : MonoBehaviour {
     public float Height;
     public float Target;
 
-    public Cell(int digitIndex, int indexX, int indexY, int digitX, int digitY) {
+    public Cell(int digitIndex, int indexX, int indexY, int digitX, int digitY, float height) {
       DigitIndex = digitIndex;
       IndexX = indexX;
       IndexY = indexY;
       DigitX = digitX;
       DigitY = digitY;
       State = State.Initializing;
-      Target = 0.0f;
-      Height = 0.0f;
+      Target = height;
+      Height = height;
     }
   }
 
@@ -65,7 +65,7 @@ public class Heightmap : MonoBehaviour {
           int x = d * digitWidth + digitX;
           int y = digitY;
           int digitIndex = InternalIndexToDigitIndex(d);
-          cells[y, x] = new Cell(digitIndex, x, y, digitX, digitY);
+          cells[y, x] = new Cell(digitIndex, x, y, digitX, digitY, minGlobalHeight);
         }
       }
     }
@@ -95,6 +95,9 @@ public class Heightmap : MonoBehaviour {
         Cell mutableCell = GetMutableCell(c);
         mutableCell.Height = height;
         mutableCell.Target = height;
+        if (height >= 0.0f && (c.State == State.Initializing || c.State == State.Stopped)) {
+          SetState(mutableCell, State.Normal);
+        }
       }
     }
     // Log();
