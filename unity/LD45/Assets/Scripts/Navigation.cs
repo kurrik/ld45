@@ -12,8 +12,8 @@ public class Navigation : MonoBehaviour {
       heightmap = h;
     }
 
-    public override bool IsPossibleMove(Vector2Int location) {
-      return heightmap.IsValidMove(location.x, location.y);
+    public override bool IsPossibleMove(Vector2Int current, Vector2Int next) {
+      return heightmap.IsValidMove(current, next);
     }
   }
 

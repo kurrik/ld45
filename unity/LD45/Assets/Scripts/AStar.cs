@@ -3,7 +3,7 @@ using UnityEngine;
 using System;
 
 public abstract class AStar {
-  public abstract bool IsPossibleMove(Vector2Int location);
+  public abstract bool IsPossibleMove(Vector2Int current, Vector2Int next);
 
   private class Step {
     public readonly Vector2Int Location;
@@ -60,7 +60,7 @@ public abstract class AStar {
         Vector2Int nextLocation = currentLocation + m;
         Step nextStep = new Step(nextLocation, nextCost, currentStep);
 
-        if (!IsPossibleMove(nextLocation)) {
+        if (!IsPossibleMove(currentLocation, nextLocation)) {
           // Spot is bad.
           continue;
         }
