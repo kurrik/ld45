@@ -3,8 +3,11 @@ using UnityEngine.UI;
 
 public class EndState : MonoBehaviour, IGameState {
   public Text pointsText;
+  private float elapsed = 0.0f;
+  public float minimumDelay = 1.0f;
 
   private void OnEnable() {
+    elapsed = 0.0f;
     Game.instance.states.PushState(this);
   }
 
@@ -15,9 +18,13 @@ public class EndState : MonoBehaviour, IGameState {
     if (!gameObject.activeSelf) {
       states.PopState();
     }
-    if (Input.touchCount > 0 || Input.GetMouseButtonDown(0)) {
-      states.PopState();
-      Game.instance.Reload();
+    if (elapsed < minimumDelay) {
+      elapsed += Time.deltaTime;
+    } else {
+      if (Input.touchCount > 0 || Input.GetMouseButtonDown(0)) {
+        states.PopState();
+        Game.instance.Reload();
+      }
     }
   }
 

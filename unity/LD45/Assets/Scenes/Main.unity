@@ -236,7 +236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d0de84f0754246f39b5aff071a9dc2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minGlobalHeight: -0.1
+  minGlobalHeight: -1
   maxGlobalHeight: 3
   tickDelay: 5
   tickRate: -0.07
@@ -546,7 +546,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8555eadd7f91748f6b005ad2b214895b, type: 2}
+  - {fileID: 2100000, guid: 7ad1d50cb7cac403a9a7fac3a26e8870, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -12,7 +12,7 @@ public class Heightmap : MonoBehaviour {
 
   private const float closeEnough = 0.00001f;
 
-  public float minGlobalHeight = -0.1f;
+  public float minGlobalHeight = -1.0f;
   public float maxGlobalHeight = 5.0f;
   public float tickDelay = 5.0f;
   public float tickRate = -0.05f;
