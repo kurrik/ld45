@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.AI;
 
 public class PlayerController : MonoBehaviour {
   public Camera cam;
