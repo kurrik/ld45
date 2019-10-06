@@ -7,6 +7,8 @@ public class Pickup : MonoBehaviour {
   public float rotationRate = 100f;
   public int points = 1;
 
+  public Vector2Int Coordinates = new Vector2Int(-1, -1);
+
   [ColorUsage(true, true)]
   public Color defaultColor = new Color(0.62f, 0.19f, 0.15f);
   [ColorUsage(true, true)]
