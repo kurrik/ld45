@@ -1,36 +1,50 @@
 # ld45
 Ludum Dare 45 - theme: "Start with nothing"
 
-## Referencess
+## Colors
 
 <table>
   <tr>
-    <th style="background: #FA8694">&nbsp;</th>
-    <td>#FA8694 - Red</td>
+    <th style="background: #FCB0B9">#FCB0B9</th>
+    <th style="background: #FA8694">#FA8694</th>
+    <th style="background: #F96173">#F96173</th>
+    <td>Red</td>
   </tr>
   <tr>
-    <th style="background: #FFD46B">&nbsp;</th>
-    <td>#FFD46B - Orange</td>
+    <th style="background: #FFE197">#FFE197</th>
+    <th style="background: #FFD46B">#FFD46B</th>
+    <th style="background: #F4C143">#F4C143</th>
+    <td>Orange</td>
   </tr>
   <tr>
-    <th style="background: #FFFC99">&nbsp;</th>
-    <td>#FFFC99 - Yellow</td>
+    <th style="background: #FFFDC5">#FFFDC5</th>
+    <th style="background: #FFFC99">#FFFC99</th>
+    <th style="background: #E6E25E">#E6E25E</th>
+    <td>Yellow</td>
   </tr>
 	<tr>
-    <th style="background: #99FFC7">&nbsp;</th>
-    <td>#99FFC7 Green </td>
+    <th style="background: #C5FFE0">#C5FFE0</th>
+    <th style="background: #99FFC7">#99FFC7</th>
+    <th style="background: #74FFB5">#74FFB5</th>
+    <td>Green</td>
   </tr>
 	<tr>
-    <th style="background: #72D4FF">&nbsp;</th>
-    <td>#72D4FF - Light Blue</td>
+    <th style="background: #95DFFF">#95DFFF</th>
+    <th style="background: #72D4FF">#72D4FF</th>
+    <th style="background: #51CBFF">#51CBFF</th>
+    <td>Light Blue</td>
   </tr>
   <tr>
-    <th style="background: #77B3FF">&nbsp;</th>
-    <td>#77B3FF - Blue</td>
+    <th style="background: #98C5FF">#98C5FF</th>
+    <th style="background: #77B3FF">#77B3FF</th>
+    <th style="background: #58A1FF">#58A1FF</th>
+    <td>Blue</td>
   </tr>
   <tr>
-    <th style="background: #EA99FF">&nbsp;</th>
-    <td>#EA99FF - Purple</td>
+    <th style="background: #F3C3FF">#F3C3FF</th>
+    <th style="background: #EA99FF">#EA99FF</th>
+    <th style="background: #E475FF">#E475FF</th>
+    <td>Purple</td>
   </tr>
 </table>
 
