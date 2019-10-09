@@ -55,6 +55,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -152,8 +153,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationRate: 200
   points: 1
-  defaultColor: {r: 0.62, g: 0.19, b: 0.15, a: 1}
-  twoColor: {r: 0.57254905, g: 0.05490196, b: 1.4352942, a: 0}
-  fiveColor: {r: 0.14780279, g: 0.94952095, b: 0.48750195, a: 0}
-  tenColor: {r: 0.69803923, g: 1.2862746, b: 0.09411765, a: 0}
-  twentyColor: {r: 0, g: 1.0039216, b: 3.2941177, a: 0}
+  Coordinates: {x: -1, y: -1}
+  defaultColor: {r: 0.8631574, g: 0.18447503, b: 0.5840786, a: 1}
+  twoColor: {r: 0.67244333, g: 0.2086369, b: 0.9386859, a: 1}
+  fiveColor: {r: 0.42869055, g: 0.9734455, b: 0.597202, a: 1}
+  tenColor: {r: 0.9473069, g: 0.93011117, b: 0.23455065, a: 1}
+  twentyColor: {r: 0.2462014, g: 0.6444799, b: 0.9646866, a: 1}

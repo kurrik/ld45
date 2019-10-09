@@ -37,7 +37,7 @@ public class Pickup : MonoBehaviour {
 
   private void SetColor(Color color) {
     if (renderer) {
-      // renderer.material.SetColor("_Color", color);
+      //renderer.material.SetColor("_Color", color);
       renderer.material.SetColor("_EmissionColor", color);
       renderer.material.EnableKeyword("_EMISSION");
     }

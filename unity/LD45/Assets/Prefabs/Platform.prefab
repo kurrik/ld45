@@ -47,6 +47,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -137,12 +138,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a4f5f43534094c528abdf78565fb8d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultColor: {r: 0.53, g: 0.53, b: 0.53, a: 1}
-  invalidColor: {r: 1, g: 0.65707195, b: 0.6367924, a: 0}
-  pendingColor: {r: 1, g: 0.93, b: 0.41, a: 1}
-  movingColor: {r: 1, g: 0.38, b: 0, a: 1}
-  destinationColor: {r: 0.0046724924, g: 0.60367906, b: 0.990566, a: 0}
-  playerPlatformColor: {r: 0.0039215623, g: 0.9015983, b: 0.99215686, a: 1}
+  pickup: {fileID: 0}
+  defaultColor: {r: 0.8301887, g: 0.805283, b: 0.6226415, a: 1}
+  invalidColor: {r: 1, g: 0.5058824, b: 0.6, a: 0}
+  pendingColor: {r: 0.9764706, g: 0.972549, b: 0.44313726, a: 1}
+  movingColor: {r: 1, g: 0.32428685, b: 0.19215685, a: 1}
+  destinationColor: {r: 0.46666667, g: 0.7019608, b: 1, a: 0}
+  playerPlatformColor: {r: 0.44705883, g: 0.83137256, b: 1, a: 1}
   invalidDuration: 0.4
   Coordinates: {x: -1, y: -1}
 --- !u!65 &5524090522470505775
