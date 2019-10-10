@@ -31,6 +31,10 @@ public class Game : MonoBehaviour {
     sounds.PlayLossSound();
   }
 
+  public void Quit() {
+    Application.Quit();
+  }
+
   public void Reload() {
     SceneManager.LoadScene(SceneManager.GetActiveScene().name);
   }

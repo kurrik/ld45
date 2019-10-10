@@ -8,6 +8,9 @@ public class GameplayState : MonoBehaviour, IGameState {
     playerController = GetComponent<PlayerController>();
   }
 
+  public void Register(GameStateManager states) { }
+  public void Unregister(GameStateManager states) { }
+
   public void StateUpdate(GameStateManager states) {
     if (Input.touchCount > 0) {
       for (int i = 0; i < Input.touchCount; i++) {

@@ -1,20 +1,44 @@
 ﻿using UnityEngine;
 
 public class SplashState : MonoBehaviour, IGameState {
+  public GameObject quitButton;
+  private GameStateManager stateManager;
+
+  public void Register(GameStateManager states) {
+    stateManager = states;
+  }
+
+  public void Unregister(GameStateManager states) {
+    stateManager = null;
+  }
+
   public void Start() {
     if (Game.instance.FastDebugStartup) {
       gameObject.SetActive(false);
     } else {
+      if (quitButton) {
+#if UNITY_EDITOR || UNITY_WEBGL
+        quitButton.SetActive(false);
+#else
+        quitButton.SetActive(true);
+#endif
+      }
       Game.instance.states.PushState(this);
       Time.timeScale = 0.0f;
     }
   }
 
+  public void Advance() {
+    stateManager.PopState();
+    gameObject.SetActive(false);
+    Time.timeScale = 1.0f;
+  }
+
   public void StateUpdate(GameStateManager states) {
-    if (Input.touchCount > 0 || Input.GetMouseButtonDown(0)) {
-      states.PopState();
-      gameObject.SetActive(false);
-      Time.timeScale = 1.0f;
+    if (Input.anyKeyDown) {
+      if (!Input.GetMouseButtonDown(0) && Input.touchCount == 0) {
+        Advance();
+      }
     }
   }
 }

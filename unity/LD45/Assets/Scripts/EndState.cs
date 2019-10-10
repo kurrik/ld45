@@ -11,6 +11,9 @@ public class EndState : MonoBehaviour, IGameState {
     Game.instance.states.PushState(this);
   }
 
+  public void Register(GameStateManager states) { }
+  public void Unregister(GameStateManager states) { }
+
   public void Start() {
   }
 

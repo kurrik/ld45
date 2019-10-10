@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Unity WebGL Player | %UNITY_WEB_NAME%</title>
+    <style>
+      body {
+        background: #99FFC7;  
+      }
+      #unityContainer {
+        width: %UNITY_WIDTH%px;
+        height: %UNITY_HEIGHT%px;
+        margin: 0 auto !important;
+        border: 10px solid #fff !important;
+      }
+      .text a {
+        color: #E475FF;
+      }
+      .text {
+        text-align: center;
+        font: 16px Arial;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="unityContainer"></div>
+    <p class="text"><a target="_blank" href="https://kurrik.itch.io/zero-coast">kurrik.itch.io/zero-coast</a></p>
+    <script src="%UNITY_WEBGL_LOADER_URL%"></script>
+    <script>var unityInstance = UnityLoader.instantiate("unityContainer", "%UNITY_WEBGL_BUILD_URL%");</script>
+  </body>
+</html>

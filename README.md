@@ -35,7 +35,7 @@ Ludum Dare 45 - theme: "Start with nothing"
   <tr>
     <th style="background: #77B3FF">#77B3FF</th>
     <td>Blue</td>
-  </tr>
+  </tr>c
 </table>
 
 ​	https://mycolor.space/?hex=%23E475FF&sub=1
