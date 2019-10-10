@@ -16,13 +16,6 @@ public class SplashState : MonoBehaviour, IGameState {
     if (Game.instance.FastDebugStartup) {
       gameObject.SetActive(false);
     } else {
-      if (quitButton) {
-#if UNITY_EDITOR || UNITY_WEBGL
-        quitButton.SetActive(false);
-#else
-        quitButton.SetActive(true);
-#endif
-      }
       Game.instance.states.PushState(this);
       Time.timeScale = 0.0f;
     }
