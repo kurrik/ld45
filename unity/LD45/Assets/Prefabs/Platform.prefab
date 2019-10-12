@@ -139,7 +139,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pickup: {fileID: 0}
-  defaultColor: {r: 0.4811321, g: 0.4811321, b: 0.4811321, a: 1}
+  defaultColor: {r: 0.5566038, g: 0.5566038, b: 0.5566038, a: 1}
   invalidColor: {r: 1, g: 0.5058824, b: 0.6, a: 0}
   pendingColor: {r: 0.9764706, g: 0.972549, b: 0.44313726, a: 1}
   movingColor: {r: 1, g: 0.32428685, b: 0.19215685, a: 1}
